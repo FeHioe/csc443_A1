@@ -40,25 +40,26 @@ int main(int argc, char *argv[]){
    		// printf("before making record\n");
     	Record record = make_record(current_line);
     	printf("uid: %d, uid2: %d\n", record.uid1, record.uid2);
-	}
-    //printf("after making record, before if statement\n");
-/*
-    if (total_records < records_per_block && current_line[0] != '\n'){
-      //printf("right before memcpy\n");
-      buffer[i] = record;
-	  i += 1;
+	
+    	//printf("after making record, before if statement\n");
 
-	  printf("buf id: %s", buffer[i-1].uid1);
+    	if (total_records < records_per_block){
+      		//printf("right before memcpy\n");
+      		buffer[i] = record;
+	  		i += 1;
+
+	  		printf("buf id1: %d buf id2: %d\n", buffer[i-1].uid1, buffer[i-1].uid2);
       
-      total_records += 1;
-   	  records_read += 1;
-      //printf("total records: %d\n", total_records);
-    } else {
-      fwrite(buffer, sizeof(Record), total_records, fp_write);
-      fflush(fp_write);
-      total_records = 0;
-    }
-*/
+      		total_records += 1;
+   	  		records_read += 1;
+      		//printf("total records: %d\n", total_records);
+    	} else {
+      		fwrite(buffer, sizeof(Record), total_records, fp_write);
+      		fflush(fp_write);
+			memset(buffer, 0, blocksize);
+      		total_records = 0;
+    	}
+	}
     
   }
   if (total_records > 0) {

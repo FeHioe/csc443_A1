@@ -8,7 +8,7 @@ int main(int argc, char *argv[]){
 
 	Record * buffer = (Record *) calloc (records_per_block, sizeof(Record));
 	if (!(fp_read = fopen(filename, "rb"))) {
-    	printf("Error: could not open file for read.");
+    	printf("Error: could not open file for read.\n");
     	exit(1);
     }
 
@@ -21,11 +21,27 @@ int main(int argc, char *argv[]){
 	printf("rpb: %d\n", records_per_block);
 
 	int i = 0;
-	while (i < 27){
+	int current_id = buffer[i].uid1;
+	int current_followers = 1;
+	int max_followers = 0;
+	//printf("current id: %d\n", current_id);
+	
+	
+
+	while(i < records_per_block){
 		i += 1;
-		printf("uid1: %d\n", buffer[i].uid1);
+		if (current_id == buffer[i].uid1){
+			current_followers += 1;
+		} else {
+			printf("current id: %d\n", current_id);
+			current_id = buffer[i].uid1;
+			if (current_followers > max_followers){
+				max_followers = current_followers;
+			}
+		};
 	};
 
+	printf("max followers: %d\n", max_followers);
 	fclose(fp_read);
 	free(buffer);
 	
