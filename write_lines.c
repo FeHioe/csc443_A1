@@ -28,6 +28,6 @@ int main(int argc, char *argv[]){
   fclose(fp_read);
 
   long time = (long) (1000 * (end.time - start.time) + (end.millitm - start.millitm));
-  printf("Processing Rate: %.3f\n", (float)time/1000);
+  printf("Processing Rate: %.hu\n %hu\n", end.millitm, start.millitm);
 
 }

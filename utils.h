@@ -8,4 +8,4 @@ typedef struct record {
   int uid2;
 } Record;
 
-Record * make_record(char *str);
+Record make_record(char *str);
