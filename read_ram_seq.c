@@ -29,14 +29,15 @@ int main(int argc, char *argv[]){
 	//printf("current id: %d\n", current_id);
 	while(i < records_per_block-1){
 		i += 1;
+		printf("uid1: %d uid2: %d\n", buffer[i].uid1, buffer[i].uid2);
 		if (current_id == buffer[i].uid1){
 			current_followers += 1;
 			total_edges += 1;
 		} else {
-			printf("current id: %d\n", current_id);
+			//printf("current id: %d\n", current_id);
 			current_id = buffer[i].uid1;
 			unique_ids += 1;
-			printf("current id: %d\n", current_id);
+			//printf("current id: %d\n", current_id);
 			if (max_followers < current_followers){
 				max_followers = current_followers;
 			};

@@ -7,22 +7,24 @@ int main(int argc, char *argv[]){
 
 	int records_per_block = block_size/sizeof(Record);
 	FILE *fp_read;
-
-	Record * buffer = (Record *) calloc (records_per_block, sizeof(Record));
 	if (!(fp_read = fopen(filename, "rb"))) {
     	printf("Error: could not open file for read.\n");
     	exit(1);
     }
-
-	int result = fread(buffer, sizeof(Record), records_per_block, fp_read);
-	if (result != records_per_block){
-		printf("Error: sizing issue.\n");
-		exit(1);
-	}
-
+	
 	fseek(fp_read, 0, SEEK_END);
 	int file_size = ftell(fp_read);
 	fseek(fp_read, 0, SEEK_SET);
+	int records_in_file = file_size/sizeof(Record); 
+
+	Record * buffer = (Record *) calloc (records_in_file, sizeof(Record));
+
+	int result = fread(buffer, sizeof(Record), records_in_file, fp_read);
+	printf("result: %d\n", result);
+	if (result != records_in_file){
+		printf("Error: sizing issue.\n");
+		exit(1);
+	}
 
 	int i = 0;
 	//printf("current id: %d\n", current_id);
@@ -40,7 +42,7 @@ int main(int argc, char *argv[]){
 		int total_edges = 0;
 
 		while (j < k){
-			printf("j: %d\n", j);
+			//printf("j: %d\n", j);
 			printf("uid1 %d   uid2 %d\n", buffer[j].uid1, buffer[j].uid2);
 			if (current_id == buffer[j].uid1){
 				current_followers += 1;
