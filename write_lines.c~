@@ -1,11 +1,12 @@
 #include "utils.h"
 
 int main(int argc, char *argv[]){
-  struct timeb start;
-  struct timeb end;
-
-	char* filename = argv[1];
-    char current_line[1024];
+   struct timeb t_begin, t_end;
+   long time_spent_ms;
+   long total_records = 0;
+   
+   char* filename = argv[1];
+   char current_line[1024];
 	FILE * fp_read;
 	FILE * fp_write;
 
@@ -18,17 +19,19 @@ int main(int argc, char *argv[]){
     	exit(1);
 	}
 
-  ftime(&start);
+  ftime(&t_begin);
   while (fgets(current_line, 1024, fp_read) != NULL) {
     fprintf(fp_write, "%s", current_line);
+    total_records++;
   }
 
   fclose(fp_write);
-  ftime(&end);
+  ftime(&t_end);
   fclose(fp_read);
 
-  long time = (long) (1000 * (end.time - start.time) + (end.millitm - start.millitm));
-  printf("Processing Rate: %.hu\n %hu\n", end.millitm, start.millitm);
-  return 0;
-  
+  time_spent_ms = (long) (1000 *(t_end.time - t_begin.time)
+       + (t_end.millitm - t_begin.millitm)); 
+  printf ("Data rate: %.3f MBPS\n", ((total_records*sizeof(Record))/(float)time_spent_ms * 1000)/1000000);
+ 
+  return 0;  
 }

@@ -1,11 +1,8 @@
 #include "utils.h"
-#include <time.h>
 
 int main(int argc, char *argv[]){
-  struct timeb start;
-  struct timeb end;
-
-  time_t tstart, tend;
+  struct timeb t_begin, t_end;
+  long time_spent_ms;
  
   char* filename = argv[1];
   int blocksize = atoi(argv[2]);
@@ -14,6 +11,7 @@ int main(int argc, char *argv[]){
   FILE *fp_read;
   FILE *fp_write;
 
+  long tr = 0;
   int total_records = 0;
   int records_read = 0;
   int records_per_block = blocksize/sizeof(Record);
@@ -29,17 +27,17 @@ int main(int argc, char *argv[]){
   }
 
   //printf("before while loop\n");
-  ftime(&start);
-  time(&tstart);
+  ftime(&t_begin);
   int i = 0;
   while (fgets(current_line, 1024, fp_read) != NULL) {
+  	 tr++;
     current_line[strcspn(current_line, "\r\n")] = '\0';
     
     if (strlen(current_line) > 0){
 
    		// printf("before making record\n");
     	Record record = make_record(current_line);
-    	printf("uid: %d, uid2: %d\n", record.uid1, record.uid2);
+    	//printf("uid: %d, uid2: %d\n", record.uid1, record.uid2);
 	
     	//printf("after making record, before if statement\n");
 
@@ -48,7 +46,7 @@ int main(int argc, char *argv[]){
       		buffer[i] = record;
 	  		i += 1;
 
-	  		printf("buf id1: %d buf id2: %d\n", buffer[i-1].uid1, buffer[i-1].uid2);
+	  		//printf("buf id1: %d buf id2: %d\n", buffer[i-1].uid1, buffer[i-1].uid2);
       
       		total_records += 1;
    	  		records_read += 1;
@@ -60,7 +58,6 @@ int main(int argc, char *argv[]){
       		total_records = 0;
     	}
 	}
-    
   }
   if (total_records > 0) {
 	 fwrite(buffer, sizeof(Record), total_records, fp_write);
@@ -69,16 +66,12 @@ int main(int argc, char *argv[]){
   }  
 
   fclose(fp_write);
-  time(&tend);
-  ftime(&end);
+  ftime(&t_end);  
   free(buffer);
   fclose(fp_read);
   
-  printf("%hu\n%hu\n", end.millitm, start.millitm);
-  printf("%f\n", difftime(tend, tstart));
-  printf("%d\n", records_read);
-  long time = (long) (1000 * (end.time - start.time) + (end.millitm - start.millitm));
-  printf("Processing Rate: %.3f\n", ((total_records * sizeof(Record))/(float)time * 1000)/1024*1024);
+  time_spent_ms = (long) (1000 *(t_end.time - t_begin.time) + (t_end.millitm - t_begin.millitm)); 
+  printf ("Data rate: %.3f MBPS\n", ((tr*sizeof(Record))/(float)time_spent_ms * 1000)/1000000);
   
   return 0;
 }

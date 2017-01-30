@@ -6,6 +6,10 @@ int main(int argc, char *argv[]){
 	int block_size = atoi(argv[2]);
 	int x = atoi(argv[3]);
 
+	struct timeb t_begin, t_end;
+   long time_spent_ms;
+   long total_records = 0;
+	
 	int records_per_block = block_size/sizeof(Record);
 	FILE *fp_read;
 
@@ -19,9 +23,11 @@ int main(int argc, char *argv[]){
 	int file_size = ftell(fp_read);
 	fseek(fp_read, 0, SEEK_SET);
 
+	ftime(&t_begin); 
 	int j = 0;
 	while(j < x){
 		int i = 0;
+		total_records++;
 		int random = rand() % (file_size/block_size);
 		fseek(fp_read, random*block_size, SEEK_SET);
 	
@@ -50,7 +56,7 @@ int main(int argc, char *argv[]){
 					max_followers = current_followers;
 				};
 			} else {
-				current_id == buffer[i].uid1;
+				current_id = buffer[i].uid1;
 				if (max_followers < current_followers){
 					max_followers = current_followers;
 				};
@@ -69,7 +75,12 @@ int main(int argc, char *argv[]){
 	};
 
 	fclose(fp_read);
+	ftime(&t_end);
 	free(buffer);
+	
+	time_spent_ms = (long) (1000 *(t_end.time - t_begin.time)
+       + (t_end.millitm - t_begin.millitm)); 
+   printf ("Data rate: %.3f MBPS\n", ((total_records*sizeof(Record))/(float)time_spent_ms * 1000)/1000000);
 	
 	return 0;
 }
