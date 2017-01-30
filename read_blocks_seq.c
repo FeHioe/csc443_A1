@@ -9,7 +9,7 @@ int main(int argc, char *argv[]){
    struct timeb t_begin, t_end;
    long time_spent_ms;
    long total_records = 0;
-	
+
 	Record * buffer = (Record *) calloc (records_per_block, sizeof(Record));
 	if (!(fp_read = fopen(filename, "rb"))) {
     	printf("Error: could not open file for read.\n");
@@ -58,8 +58,8 @@ int main(int argc, char *argv[]){
 
 	};
 
-	printf ("Total Records: %d unique users: %d\n", total_edges, unique_users);
-	printf("max followers: %d\n", max_followers);
+	printf ("Total Records: %d \nUnique Users: %d \nAverage: %d\n", total_edges, unique_users, total_edges/unique_users);
+	printf("Max Followers: %d\n", max_followers);
 	fclose(fp_read);
 	ftime(&t_end);
 	free(buffer);

@@ -49,7 +49,7 @@ int main(int argc, char *argv[]){
 		while (j < k){
 			total_records++;
 			//printf("j: %d\n", j);
-			printf("uid1 %d   uid2 %d\n", buffer[j].uid1, buffer[j].uid2);
+			//printf("uid1 %d   uid2 %d\n", buffer[j].uid1, buffer[j].uid2);
 			if (current_id == buffer[j].uid1){
 				current_followers += 1;
 				total_edges += 1;
@@ -69,9 +69,9 @@ int main(int argc, char *argv[]){
 			};
 			j +=1;
 		};
-		printf("iteration #%d\n", j);
-		printf ("Total Records: %d unique users: %d\n", total_edges, unique_ids);
-		printf("max followers: %d\n\n", max_followers);
+		printf("Iteration #%d\n", j);
+		printf ("Total Records: %d \nUnique Users: %d \nAverage: %d\n", total_edges, unique_ids, total_edges/unique_ids);
+		printf("Max Followers: %d\n\n", max_followers);;
 	};
 
 	fclose(fp_read);
