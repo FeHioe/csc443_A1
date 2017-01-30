@@ -29,7 +29,6 @@ int main(int argc, char *argv[]){
 		buffer[random].uid1 = 1;
 		buffer[random].uid2 = 2;
 	printf("after replace - uid1:%d uid2:%d\n", buffer[random].uid1, buffer[random].uid2);
-	};
-	
 	return 0;
+	};
 }

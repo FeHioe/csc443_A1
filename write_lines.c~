@@ -29,6 +29,6 @@ int main(int argc, char *argv[]){
 
   long time = (long) (1000 * (end.time - start.time) + (end.millitm - start.millitm));
   printf("Processing Rate: %.hu\n %hu\n", end.millitm, start.millitm);
- 
-  return 0;  
+  return 0;
+  
 }

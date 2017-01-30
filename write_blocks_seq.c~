@@ -79,7 +79,6 @@ int main(int argc, char *argv[]){
   printf("%d\n", records_read);
   long time = (long) (1000 * (end.time - start.time) + (end.millitm - start.millitm));
   printf("Processing Rate: %.3f\n", ((total_records * sizeof(Record))/(float)time * 1000)/1024*1024);
-  
   return 0;
 }
 
