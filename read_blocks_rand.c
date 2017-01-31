@@ -44,7 +44,7 @@ int main(int argc, char *argv[]){
 		while(i < records_per_block){
 			total_edges += 1;
 
-			printf("uid1 %d   uid2 %d\n", buffer[i].uid1, buffer[i].uid2);
+			//printf("uid1 %d   uid2 %d\n", buffer[i].uid1, buffer[i].uid2);
 			
 			if (current_id == -1){
 				current_id = buffer[i].uid1;
@@ -68,9 +68,9 @@ int main(int argc, char *argv[]){
 			
 		};
 		j +=1;
-		printf("iteration #%d\n", j);
-		printf ("Total Records: %d unique users: %d\n", total_edges, unique_users);
-		printf("max followers: %d\n\n", max_followers);
+		printf("Iteration #%d\n", j);
+		printf ("Total Records: %d \nUnique Users: %d \nAverage: %d\n", total_edges, unique_users, total_edges/unique_users);
+		printf("Max Followers: %d\n\n", max_followers);
 
 	};
 

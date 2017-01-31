@@ -6,6 +6,10 @@ int main(int argc, char *argv[]){
 	int records_per_block = block_size/sizeof(Record);
 	FILE *fp_read;
 
+   struct timeb t_begin, t_end;
+   long time_spent_ms;
+   long total_records = 0;
+
 	Record * buffer = (Record *) calloc (records_per_block, sizeof(Record));
 	if (!(fp_read = fopen(filename, "rb"))) {
     	printf("Error: could not open file for read.\n");
@@ -18,7 +22,7 @@ int main(int argc, char *argv[]){
 		exit(1);
 	}
 
-	printf("rpb: %d\n", records_per_block);
+	//printf("rpb: %d\n", records_per_block);
 
 	int i = 0;
 	int current_id = buffer[i].uid1;
@@ -27,9 +31,11 @@ int main(int argc, char *argv[]){
 	int unique_ids = 1;
 	int total_edges = 1;
 	//printf("current id: %d\n", current_id);
+	ftime(&t_begin);
 	while(i < records_per_block-1){
+		total_records++;
 		i += 1;
-		printf("uid1: %d uid2: %d\n", buffer[i].uid1, buffer[i].uid2);
+		//printf("uid1: %d uid2: %d\n", buffer[i].uid1, buffer[i].uid2);
 		if (current_id == buffer[i].uid1){
 			current_followers += 1;
 			total_edges += 1;
@@ -46,11 +52,14 @@ int main(int argc, char *argv[]){
 		};
 	};
 
-	printf("max followers: %d\n", max_followers);
-	printf("unique ids: %d total egdes: %d\n", unique_ids, total_edges);
-	printf("Average: %d\n", total_edges/unique_ids);
+	printf ("Total Records: %d \nUnique Users: %d \nAverage: %d\n", total_edges, unique_ids, total_edges/unique_ids);
+	printf("Max Followers: %d\n", max_followers);
 	fclose(fp_read);
+	ftime(&t_end);
 	free(buffer);
 	
+  time_spent_ms = (long) (1000 *(t_end.time - t_begin.time) + (t_end.millitm - t_begin.millitm)); 
+  printf ("Data rate: %.3f MBPS\n", ((total_records*sizeof(Record))/(float)time_spent_ms * 1000)/1000000);
+
 	return 0;
 }
