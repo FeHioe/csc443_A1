@@ -319,4 +319,30 @@ Average: 273
 Max Followers: 8569
 Data rate: 3999.992 MBPS
 
+Read blocks rand
+512: Data rate: 0.031 MBPS
+Data rate: 0.025 MBPS
+Data rate: 0.032 MBPS
+Data rate: 0.032 MBPS
+Data rate: 0.031 MBPS
+Data rate: 0.029 MBPS
+Data rate: 0.010 MBPS
+Data rate: 0.006 MBPS
+Data rate: 0.003 MBPS
+
+read ram rand
+Data rate: 24.414 MBPS
+Data rate: 97.656 MBPS
+Data rate: 390.625 MBPS
+Data rate: 390.625 MBPS
+Data rate: 520.833 MBPS
+Data rate: 1562.500 MBPS
+Data rate: 2564.103 MBPS
+Data rate: 2898.551 MBPS
+Data rate: 2836.879 MBPS
+
+
+
+
+
 
