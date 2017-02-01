@@ -247,6 +247,12 @@ Average: 9
 Max Followers: 214329
 Data rate: 0.008 MBPS
 
+./read_blocks_seq big.dat 4194304
+Total Records: 255933054 
+Unique Users: 26301626 
+Average: 9
+Max Followers: 214329
+Data rate: 0.003 MBPS
 
 
 
