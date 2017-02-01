@@ -167,6 +167,13 @@ Average: 409
 Max Followers: 1997
 Data rate: 31.242 MBPS
 
+./read_blocks_rand big.dat 32768 100
+Data rate: 0.027 MBPS
+Data rate: 0.054 MBPS
+Data rate: 0.051 MBPS
+Data rate: 0.020 MBPS
+Data rate: 0.028 MBPS
+
 
 What is the optimal block size according to your experiment? 
 
