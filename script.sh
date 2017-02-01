@@ -12,4 +12,3 @@ filename=./data/edges.csv
 ./write_blocks_seq $filename 1048576
 ./write_blocks_seq $filename 2097152
 ./write_blocks_seq $filename 4194304
- 
