@@ -120,25 +120,60 @@ Blocksize: 4194304
 Data rate: 29.749 MBPS
 
 write lines
-Data rate: 11.657 MBPS
+Data rate: 17.678 MBPS
+Data rate: 18.122 MBPS
+Data rate: 20.411 MBPS
+Data rate: 19.552 MBPS
+Data rate: 19.552 MBPS
+
+optimal = 32768
+
+read blocks seq ./read_blocks_seq records.dat 32768
+Total Records: 85311018 
+Unique Users: 8767145 
+Average: 9
+Max Followers: 214329
+Data rate: 0.700 MBPS
+
+Total Records: 85311018 
+Unique Users: 8767145 
+Average: 9
+Max Followers: 214329
+Data rate: 0.552 MBPS
+
+Total Records: 85311018 
+Unique Users: 8767145 
+Average: 9
+Max Followers: 214329
+Data rate: 0.828 MBPS
+
+Total Records: 85311018 
+Unique Users: 8767145 
+Average: 9
+Max Followers: 214329
+Data rate: 0.570 MBPS
+
+Total Records: 85311018 
+Unique Users: 8767145 
+Average: 9
+Max Followers: 214329
+Data rate: 0.621 MBPS
+
+
+read ram seq ./read_ram_seq records.dat 32768
+Total Records: 4096 
+Unique Users: 10 
+Average: 409
+Max Followers: 1997
+Data rate: 31.242 MBPS
 
 
 What is the optimal block size according to your experiment? 
-avg for 512: 17.8454 MBPS
-avg for 1024: 24.8618 MBPS
-avg for 4096: 25.646 MBPS
-avg for 8192: 25.7724 MBPS
-avg for 16384: 27.069 MBPS
-avg for 32768: 28.0036 MBPS
-avg for 1048576: 28.2836 MBPS
-avg for 2097152: 27.9442 MBPS
-avg for 4194304: 28.0584 MBPS
 
-According to our experiments, a blocksize of 512 bytes yields the optimal write rate.
 Does it correspond to the system disk block size? 
-No, the system disk block size is significantly larger than 512 bytes. 
+
 Is there a block size when further increase does not contribute to better performance?
-Yes, at a block size of 32768 bytes, it does not look like increasing the block size contributes to any better performance. 
+
 Is there a difference? (From write_lines) 
 
 What is more efficient - writing in blocks or writing in lines? Why?
