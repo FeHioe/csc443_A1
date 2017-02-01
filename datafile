@@ -1,0 +1,136 @@
+CSC443: A1
+CDF: hioefeli, 
+
+3.1. Experiment 1: optimal block size
+
+System Disk Block Size: 
+Filesystem           1K-blocks      Used  Available Use% Mounted on
+udev                   4018500         4    4018496   1% /dev
+tmpfs                   806292       808     805484   1% /run
+/dev/sda1             50264772  42094560    6617828  87% /
+none                         4         0          4   0% /sys/fs/cgroup
+none                      5120         0       5120   0% /run/lock
+none                   4031452     53452    3978000   2% /run/shm
+none                    102400         0     102400   0% /run/user
+/dev/sda7             11963960     31316   11916260   1% /tmp
+/dev/sda8             53394232   6398784   46979064  12% /data
+/dev/sda6              4908544   1138544    3497616  25% /var
+homesrv-109:/h/u13   309637120 129330184  164578296  45% /h/u13
+homesrv-109:/h/u2    309637120 213103232   96533888  69% /h/u2
+homesrv-109:/h/u1    412849328 312007080  100842248  76% /h/u1
+fs4:/export0/csc443 5815704576 782870528 4974196736  14% /s/csc443
+homesrv-109:/s/d0    103213056   5739520   97473536   6% /s/d0
+
+Data rates:
+first experiment
+Blocksize: 512
+Data rate: 21.221 MBPS
+Blocksize: 1024
+Data rate: 29.798 MBPS
+Blocksize: 4096
+Data rate: 30.821 MBPS
+Blocksize: 8192
+Data rate: 31.127 MBPS
+Blocksize: 16384
+Data rate: 30.866 MBPS
+Blocksize: 32768
+Data rate: 30.510 MBPS
+Blocksize: 1048576
+Data rate: 31.214 MBPS
+Blocksize: 2097152
+Data rate: 29.590 MBPS
+Blocksize: 4194304
+Data rate: 23.461 MBPS
+second experiment
+Blocksize: 512
+Data rate: 14.862 MBPS
+Blocksize: 1024
+Data rate: 23.323 MBPS
+Blocksize: 4096
+Data rate: 24.024 MBPS
+Blocksize: 8192
+Data rate: 21.243 MBPS
+Blocksize: 16384
+Data rate: 29.953 MBPS
+Blocksize: 32768
+Data rate: 28.281 MBPS
+Blocksize: 1048576
+Data rate: 27.946 MBPS
+Blocksize: 2097152
+Data rate: 28.465 MBPS
+Blocksize: 4194304
+Data rate: 30.413 MBPS
+third experiment
+Blocksize: 512
+Data rate: 18.377 MBPS
+Blocksize: 1024
+Data rate: 23.941 MBPS
+Blocksize: 4096
+Data rate: 24.781 MBPS
+Blocksize: 8192
+Data rate: 24.682 MBPS
+Blocksize: 16384
+Data rate: 23.842 MBPS
+Blocksize: 32768
+Data rate: 24.149 MBPS
+Blocksize: 1048576
+Data rate: 25.207 MBPS
+Blocksize: 2097152
+Data rate: 27.508 MBPS
+Blocksize: 4194304
+Data rate: 26.961 MBPS
+fourth experiment
+Blocksize: 512
+Data rate: 15.418 MBPS
+Blocksize: 1024
+Data rate: 23.918 MBPS
+Blocksize: 4096
+Data rate: 24.114 MBPS
+Blocksize: 8192
+Data rate: 26.405 MBPS
+Blocksize: 16384
+Data rate: 25.284 MBPS
+Blocksize: 32768
+Data rate: 29.810 MBPS
+Blocksize: 1048576
+Data rate: 29.218 MBPS
+Blocksize: 2097152
+Data rate: 27.531 MBPS
+Blocksize: 4194304
+Data rate: 29.708 MBPS
+fifth experiment
+Blocksize: 512
+Data rate: 19.349 MBPS
+Blocksize: 1024
+Data rate: 23.329 MBPS
+Blocksize: 4096
+Data rate: 24.490 MBPS
+Blocksize: 8192
+Data rate: 25.405 MBPS
+Blocksize: 16384
+Data rate: 25.400 MBPS
+Blocksize: 32768
+Data rate: 27.268 MBPS
+Blocksize: 1048576
+Data rate: 27.833 MBPS
+Blocksize: 2097152
+Data rate: 26.627 MBPS
+Blocksize: 4194304
+Data rate: 29.749 MBPS
+
+
+What is the optimal block size according to your experiment? 
+
+Does it correspond to the system disk block size? 
+
+Is there a block size when further increase does not contribute to better performance?
+
+Is there a difference? (From write_lines) 
+
+What is more efficient - writing in blocks or writing in lines? Why?
+
+Write the report chapter summarizing block-size experiments. Include plots and the discussion.
+
+
+3.2. Experiment 2: sequential vs. random read rate
+
