@@ -124,11 +124,21 @@ Data rate: 11.657 MBPS
 
 
 What is the optimal block size according to your experiment? 
+avg for 512: 17.8454 MBPS
+avg for 1024: 24.8618 MBPS
+avg for 4096: 25.646 MBPS
+avg for 8192: 25.7724 MBPS
+avg for 16384: 27.069 MBPS
+avg for 32768: 28.0036 MBPS
+avg for 1048576: 28.2836 MBPS
+avg for 2097152: 27.9442 MBPS
+avg for 4194304: 28.0584 MBPS
 
+According to our experiments, a blocksize of 512 bytes yields the optimal write rate.
 Does it correspond to the system disk block size? 
-
+No, the system disk block size is significantly larger than 512 bytes. 
 Is there a block size when further increase does not contribute to better performance?
-
+Yes, at a block size of 32768 bytes, it does not look like increasing the block size contributes to any better performance. 
 Is there a difference? (From write_lines) 
 
 What is more efficient - writing in blocks or writing in lines? Why?
