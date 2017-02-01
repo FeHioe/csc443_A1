@@ -28,25 +28,24 @@ int main(int argc, char *argv[]){
 
   //printf("before while loop\n");
   ftime(&t_begin);
-  int i = 0;
+  //int i = 0;
   while (fgets(current_line, 1024, fp_read) != NULL) {
   	 tr++;
     current_line[strcspn(current_line, "\r\n")] = '\0';
     
     if (strlen(current_line) > 0){
 
-   		// printf("before making record\n");
+//   		 printf("before making record\n");
     	Record record = make_record(current_line);
-    	//printf("uid: %d, uid2: %d\n", record.uid1, record.uid2);
+    //	printf("uid: %d, uid2: %d\n", record.uid1, record.uid2);
 	
-    	//printf("after making record, before if statement\n");
+    //	printf("after making record, before if statement\n");
 
     	if (total_records < records_per_block){
-      		//printf("right before memcpy\n");
-      		buffer[i] = record;
-	  		i += 1;
-
-	  		//printf("buf id1: %d buf id2: %d\n", buffer[i-1].uid1, buffer[i-1].uid2);
+      //		printf("right before memcpy\n");
+      		buffer[total_records] = record;
+	  		//i += 1;
+	  	//	printf("buf id1: %d buf id2: %d\n", buffer[total_records].uid1, buffer[total_records].uid2);
       
       		total_records += 1;
    	  		records_read += 1;
