@@ -21,6 +21,7 @@ homesrv-109:/h/u1    412849328 312007080  100842248  76% /h/u1
 fs4:/export0/csc443 5815704576 782870528 4974196736  14% /s/csc443
 homesrv-109:/s/d0    103213056   5739520   97473536   6% /s/d0
 
+write block seq
 Data rates:
 first experiment
 Blocksize: 512
@@ -117,6 +118,9 @@ Blocksize: 2097152
 Data rate: 26.627 MBPS
 Blocksize: 4194304
 Data rate: 29.749 MBPS
+
+write lines
+Data rate: 11.657 MBPS
 
 
 What is the optimal block size according to your experiment? 
