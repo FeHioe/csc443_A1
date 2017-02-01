@@ -205,7 +205,7 @@ Average: 9
 Max Followers: 214329
 Data rate: 13.584 MBPS
 
-4096
+./read_blocks_seq big.dat 4096
 Total Records: 255933054 
 Unique Users: 26301626 
 Average: 9
@@ -255,5 +255,68 @@ Max Followers: 214329
 Data rate: 0.003 MBPS
 
 
+SSD
+./read_ram_seq big.dat 512
+Total Records: 64 
+Unique Users: 5 
+Average: 12
+Max Followers: 42
+Data rate: inf MBPS
+
+./read_ram_seq big.dat 1024
+Total Records: 128 
+Unique Users: 8 
+Average: 16
+Max Followers: 64
+Data rate: inf MBPS
+
+./read_ram_seq big.dat 4096
+Total Records: 512 
+Unique Users: 24 
+Average: 21
+Max Followers: 171
+Data rate: inf MBPS
+
+./read_ram_seq big.dat 8192
+Total Records: 1024 
+Unique Users: 48 
+Average: 21
+Max Followers: 171
+Data rate: inf MBPS
+
+./read_ram_seq big.dat 16384
+Total Records: 2048 
+Unique Users: 98 
+Average: 20
+Max Followers: 171
+Data rate: inf MBPS
+
+./read_ram_seq big.dat 32768
+Total Records: 4096 
+Unique Users: 201 
+Average: 20
+Max Followers: 234
+Data rate: 31.242 MBPS
+
+./read_ram_seq big.dat 1048576
+Total Records: 131072 
+Unique Users: 595 
+Average: 220
+Max Followers: 8569
+Data rate: 999.992 MBPS
+
+./read_ram_seq big.dat 2097152
+Total Records: 262144 
+Unique Users: 1056 
+Average: 248
+Max Followers: 8569
+Data rate: inf MBPS
+
+./read_ram_seq big.dat 4194304
+Total Records: 524288 
+Unique Users: 1914 
+Average: 273
+Max Followers: 8569
+Data rate: 3999.992 MBPS
 
 
