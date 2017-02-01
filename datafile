@@ -177,8 +177,6 @@ Data rate: 0.028 MBPS
 ./write_blocks_rand big.dat 32768 100
 Data rate: 0.763 MBPS
 
-
-
 What is the optimal block size according to your experiment? 
 
 Does it correspond to the system disk block size? 
@@ -193,4 +191,63 @@ Write the report chapter summarizing block-size experiments. Include plots and t
 
 
 3.2. Experiment 2: sequential vs. random read rate
+./read_blocks_seq big.dat 512
+Total Records: 255933054 
+Unique Users: 26301626 
+Average: 9
+Max Followers: 214329
+Data rate: 1.210 MBPS
+
+./read_blocks_seq big.dat 1024
+Total Records: 255933054 
+Unique Users: 26301626 
+Average: 9
+Max Followers: 214329
+Data rate: 13.584 MBPS
+
+4096
+Total Records: 255933054 
+Unique Users: 26301626 
+Average: 9
+Max Followers: 214329
+Data rate: 3.578 MBPS
+
+./read_blocks_seq big.dat 8192
+Total Records: 255933054 
+Unique Users: 26301626 
+Average: 9
+Max Followers: 214329
+Data rate: 1.860 MBPS
+
+./read_blocks_seq big.dat 16384
+Total Records: 255933054 
+Unique Users: 26301626 
+Average: 9
+Max Followers: 214329
+Data rate: 0.923 MBPS
+
+./read_blocks_seq big.dat 32768
+Total Records: 255933054 
+Unique Users: 26301626 
+Average: 9
+Max Followers: 214329
+Data rate: 0.470 MBPS
+
+./read_blocks_seq big.dat 1048576
+Total Records: 255933054 
+Unique Users: 26301626 
+Average: 9
+Max Followers: 214329
+Data rate: 0.016 MBPS
+
+./read_blocks_seq big.dat 2097152
+Total Records: 255933054 
+Unique Users: 26301626 
+Average: 9
+Max Followers: 214329
+Data rate: 0.008 MBPS
+
+
+
+
 
