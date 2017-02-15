@@ -48,3 +48,9 @@ void sort_uid2(char *filename, int total_records) {
 	};
 
 };
+int main(int argc, char *argv[]){
+	char *filename = argv[1];
+	int block_size = atoi(argv[2]);
+
+	sort_uid2(filename, block_size);
+}
