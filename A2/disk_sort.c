@@ -1,5 +1,8 @@
-#include merge.h
-#include stdlib.h
+#include "merge.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 /**
 * Compares two records a and b 
@@ -9,9 +12,10 @@
 * negative: record a < record b
 * zero: equal records
 */
+
 int compare (const void *a, const void *b) {
- int a_f = ((const struct Record*)a)->f;
- int b_f = ((const struct Record*)b)->f;
+ int a_f = ((const Record *)a)->UID2;
+ int b_f = ((const Record *)b)->UID2;
  return (a_f - b_f);
 }
 
@@ -22,35 +26,48 @@ int compare (const void *a, const void *b) {
 * 3 - size of each array element
 * 4 - function to compare two elements of the array
 */
-qsort (buffer, total_records, sizeof(Record), compare);
 
-void sort_uid2(char *filename, int total_records) {
+
+void sort_array_by_uid2(Record * buffer, int total_records) {
 	
-	Record * buffer = (Record *) calloc(total_records/sizeof(Record), sizeof(Record));
-
+	// Record * buffer = (Record *) calloc(total_records/sizeof(Record), sizeof(Record));
+   /*
 	FILE *fp_read;
 	if (!(fp_read = fopen(filename, "rb"))) {
     	printf("Error: could not open file for read.\n");
     	exit(1);
     }
-
+    
     int result = fread(buffer, sizeof(Record), total_records, fp_read);
 	printf("result: %d\n", result);
 	if (result != total_records){
 		printf("Error: sizing issue.\n");
 		exit(1);
 	}
-
-	Record * sorted = qsort(buffer, total_records, sizeof(Record), compare);
-
-	for (int i; i < total_records/sizeof(Record); i++){
-		printf("Sorted element %d: uid2 %d", i, sorted[i].UID2);
+	*/
+	qsort(buffer, total_records, sizeof(Record), compare);
+   int i;
+	for (i =0; i < total_records; i++){
+		printf("Sorted element %d: uid2 %d", i, buffer[i].UID2);
 	};
 
 };
 int main(int argc, char *argv[]){
 	char *filename = argv[1];
 	int block_size = atoi(argv[2]);
-
-	sort_uid2(filename, block_size);
+  FILE *fp_read;
+	if (!(fp_read = fopen(filename, "rb"))) {
+    	printf("Error: could not open file for read.\n");
+    	exit(1);
+    }
+    
+   int total_records = block_size/sizeof(Record);
+   Record * buffer = (Record *) calloc(total_records, sizeof(Record));
+   int result = fread(buffer, sizeof(Record), total_records, fp_read);
+	printf("result: %d\n", result);
+	if (result != total_records){
+		printf("Error: sizing issue.\n");
+		exit(1);
+	}
+	sort_array_by_uid2(buffer, total_records);
 }
