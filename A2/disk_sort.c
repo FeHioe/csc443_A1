@@ -19,43 +19,18 @@ int compare (const void *a, const void *b) {
  return (a_f - b_f);
 }
 
-/**
-* Arguments:
-* 1 - an array to sort
-* 2 - size of an array
-* 3 - size of each array element
-* 4 - function to compare two elements of the array
-*/
-
-
 void sort_array_by_uid2(Record * buffer, int total_records) {
-	
-	// Record * buffer = (Record *) calloc(total_records/sizeof(Record), sizeof(Record));
-   /*
-	FILE *fp_read;
-	if (!(fp_read = fopen(filename, "rb"))) {
-    	printf("Error: could not open file for read.\n");
-    	exit(1);
-    }
-    
-    int result = fread(buffer, sizeof(Record), total_records, fp_read);
-	printf("result: %d\n", result);
-	if (result != total_records){
-		printf("Error: sizing issue.\n");
-		exit(1);
-	}
-	*/
 	qsort(buffer, total_records, sizeof(Record), compare);
    int i;
 	for (i =0; i < total_records; i++){
-		printf("Sorted element %d: uid2 %d", i, buffer[i].UID2);
+		printf("Sorted element %d: uid2 %d\n", i, buffer[i].UID2);
 	};
-
 };
+
 int main(int argc, char *argv[]){
 	char *filename = argv[1];
 	int block_size = atoi(argv[2]);
-  FILE *fp_read;
+   FILE *fp_read;
 	if (!(fp_read = fopen(filename, "rb"))) {
     	printf("Error: could not open file for read.\n");
     	exit(1);
@@ -70,4 +45,6 @@ int main(int argc, char *argv[]){
 		exit(1);
 	}
 	sort_array_by_uid2(buffer, total_records);
+	
+  return 0;
 }
