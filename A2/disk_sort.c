@@ -1,5 +1,4 @@
 #include "merge.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -28,6 +27,7 @@ void sort_array_by_uid2(Record * buffer, int total_records) {
 };
 
 int main(int argc, char *argv[]){
+  /* PART 1
 	char *filename = argv[1];
 	int block_size = atoi(argv[2]);
    FILE *fp_read;
@@ -45,6 +45,55 @@ int main(int argc, char *argv[]){
 		exit(1);
 	}
 	sort_array_by_uid2(buffer, total_records);
-	
+
   return 0;
+  */
+  
+  char *filename = argv[1];
+  int total_mem = atoi(argv[2]); // add plus 5MB
+  int block_size = atoi(argv[3]);
+  FILE *fp_read;
+  FILE * fp_write;
+  int result;
+  
+  if (!(fp_read = fopen(filename, "rb"))) {
+    printf("Error: could not open file for read.\n");
+    exit(1);
+  }
+ 
+  // Check if total memory is sufficent 
+  int total_block_num = total_mem/block_size;
+  int max_num_records = (total_mem * total_mem) / (sizeof(Record) * block_size);
+  
+  if (max_num_records < total_block_num){ //double check this
+    printf("Error not enough memory\n");
+    exit(1);
+  };
+  
+  // Partition into K chunks of maximum possible size
+  int i = 1;
+  char str[1024];
+  
+  Record * buffer = (Record *) calloc(total_mem/sizeof(Record), sizeof(Record));
+  while ((result = fread(buffer, sizeof(Record), total_mem/sizeof(Record), fp_read)) > 0){
+    
+    sort_array_by_uid2(buffer, result);
+    sprintf(str, "sublist%d.dat", i);
+    
+     if (!(fp_write = fopen(str, "wb"))){
+      printf("Error: could not open file for write.");
+      exit(1);
+    }
+    
+    fwrite(buffer, sizeof(Record), result, fp_write);
+    
+    fclose(fp_write);
+      i++; 
+  }
+  
+  fclose(fp_read);
+  free(buffer);
+  
+  return 0;
+  
 }
