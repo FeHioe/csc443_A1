@@ -55,6 +55,7 @@ int main(int argc, char *argv[]){
   FILE *fp_read;
   FILE * fp_write;
   int result;
+  int filesize;
   
   if (!(fp_read = fopen(filename, "rb"))) {
     printf("Error: could not open file for read.\n");
@@ -68,12 +69,17 @@ int main(int argc, char *argv[]){
   // Check if total memory is sufficient 
   int total_block_num = total_mem/block_size; // M
   int B = filesize/block_size;
-  if (B > (total_block_num**2)) {
-		printf("file cannot be sorted given the memory");
+  printf("B is %d\n", B);
+  printf("M is %d\n", total_block_num);
+  if (B > (total_block_num * total_block_num)) {
+		printf("file cannot be sorted given the available memory\n");
 		exit(1);
   }
   
-  int max_num_records = (total_mem * total_mem) / (sizeof(Record) * block_size);
+  int num_records_in_blocksize = block_size/sizeof(Record);
+  
+  // ?
+  int max_num_records = (total_mem * total_mem) / (sizeof(Record) * block_size); 
   
   if (max_num_records < total_block_num){ //double check this
     printf("Error not enough memory\n");
@@ -83,7 +89,7 @@ int main(int argc, char *argv[]){
   // Partition into K chunks of maximum possible size
   int i = 1;
   char str[1024];
-   // data should be read and written in terms of blocks
+   // TODO: data should be read and written in terms of blocks
    // need to align blocks and records
   Record * buffer = (Record *) calloc(total_mem/sizeof(Record), sizeof(Record));
   while ((result = fread(buffer, sizeof(Record), total_mem/sizeof(Record), fp_read)) > 0){ 
