@@ -65,8 +65,10 @@ int main(int argc, char *argv[]){
   // get file size
   fseek(fp_read, 0L, SEEK_END);
   filesize = ftell(fp_read);
-  fseek(fp_read, 0L, SEEK_SET);
+  rewind(fp_read);
   
+  result = fread(block_buffer, sizeof(Record), block_elements, fp_read)
+  printf("result: \n", result);
   // Check if total memory is sufficient 
   int total_block_num = total_mem/block_size; // M
   int B = filesize/block_size;
