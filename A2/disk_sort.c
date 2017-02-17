@@ -108,10 +108,6 @@ int main(int argc, char *argv[]){
 
       //printf("read\n");
       
-      if ((num_block+1 == test) && (chunk_size % block_size != 0)){
-        block_elements = (chunk_size % block_size) / sizeof(Record);
-      };
-      
       result = fread(block_buffer, sizeof(Record), block_elements, fp_read);
 
       int y;
@@ -133,6 +129,34 @@ int main(int argc, char *argv[]){
 
       for (y=0; y < 9; y++){
         printf ("buffer element: %d\n", buffer[y].UID2);
+      };
+
+      if ((num_block+1 == test) && (chunk_size % block_size != 0)){
+        block_elements = (chunk_size % block_size) / sizeof(Record);
+
+        result = fread(block_buffer, sizeof(Record), block_elements, fp_read);
+
+        int y;
+        for (y=0; y < 9; y++){
+          printf ("block_buffer element: %d\n", block_buffer[y].UID2);
+        };
+
+        //printf("add records\n");
+
+        printf("block e: %d\n", block_elements);
+        int j;
+        for (j=0; j < block_elements; j++) {
+
+          buffer[buffer_i].UID1 = block_buffer[j].UID1;
+          buffer[buffer_i].UID2 = block_buffer[j].UID2;
+          buffer_i++;
+        };
+        // printf("added\n");
+
+        for (y=0; y < 9; y++){
+          printf ("buffer element: %d\n", buffer[y].UID2);
+        };
+
       };
 
       num_block++;
