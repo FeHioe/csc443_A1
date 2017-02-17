@@ -14,7 +14,7 @@ all: disk_sort
  
 #sequential writing in blocks
 disk_sort: $(DISK_SORT_SRC)
-	$(CC) $(CFLAGS) $^ -o -lm $@ 
+	$(CC) $(CFLAGS) $^ -o $@ 
  
 clean:  
 	rm disk_sort
