@@ -108,10 +108,10 @@ int main(int argc, char *argv[]){
       num_block++;
 
       //printf("read\n");
-      /*
+      
       if (num_block == test && (chunk_size % block_size != 0)){
         block_elements = (chunk_size % block_size) / sizeof(Record);
-      };*/
+      };
       
       result = fread(block_buffer, sizeof(Record), block_elements, fp_read);
 
