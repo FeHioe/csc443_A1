@@ -87,11 +87,12 @@ int main(int argc, char *argv[]){
   char str[1024];
   for (i=0 ; i < k; i ++){
     // Align chunk with block size 
-    printf ("before buffers\n")
+    
+    printf ("before buffers\n");
     Record *buffer = (Record*) calloc (chunk_size, sizeof(Record));
     Record *block_buffer = (Record*) calloc (block_size, sizeof(Record));
     printf("after buffers\n");
-    
+
     int num_block = 0;
     int block_elements = block_size / sizeof(Record);
     while ( (result = fread(block_buffer, sizeof(Record), block_elements, fp_read) > 0) 
