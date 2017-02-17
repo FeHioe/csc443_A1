@@ -68,6 +68,8 @@ int main(int argc, char *argv[]){
   rewind(fp_read);
 
   // Check if total memory is sufficient 
+
+  /*
   int total_block_num = total_mem/block_size; // M
   int B = filesize/block_size;
   printf("B is %d\n", B);
@@ -76,6 +78,7 @@ int main(int argc, char *argv[]){
 		printf("file cannot be sorted given the available memory\n");
 		exit(1);
   }
+  */
 
   // Partition into K chunks of maximum possible size
   int k = ceil((float)filesize / total_mem);
@@ -88,36 +91,30 @@ int main(int argc, char *argv[]){
   char str[1024];
   for (i=0 ; i < k; i ++){
     // Align chunk with block size 
-
-    //printf ("before buffers\n");
     Record *buffer = (Record*) calloc (chunk_size, sizeof(Record));
     Record *block_buffer = (Record*) calloc (block_size, sizeof(Record));
-    //printf("after buffers\n");
 
     int num_block = 0;
     int block_elements = block_size / sizeof(Record);
     int test = ((int)chunk_size/block_size);
     int buffer_i = 0;
 
-    //printf("before read\n");
-    printf("record size: %d\n", sizeof(Record));
-    printf("chunk: %d block: %d test:%d block e: %d\n", chunk_size, block_size, test, block_elements);
+    //printf("record size: %d\n", sizeof(Record));
+    //printf("chunk: %d block: %d test:%d block e: %d\n", chunk_size, block_size, test, block_elements);
 
-    while ((num_block < test ) ){
-      printf("num_block: %d\n", num_block);
-
-      //printf("read\n");
+    while (num_block < test){
+      //printf("num_block: %d\n", num_block);      
       
       result = fread(block_buffer, sizeof(Record), block_elements, fp_read);
 
+      /*
       int y;
       for (y=0; y < 9; y++){
         printf ("block_buffer element: %d\n", block_buffer[y].UID2);
       };
+      */
+      //printf("block e: %d\n", block_elements);
 
-      //printf("add records\n");
-
-      printf("block e: %d\n", block_elements);
       int j;
       for (j=0; j < block_elements; j++) {
 
@@ -125,25 +122,27 @@ int main(int argc, char *argv[]){
         buffer[buffer_i].UID2 = block_buffer[j].UID2;
         buffer_i++;
       };
-     // printf("added\n");
 
+      /*
       for (y=0; y < 9; y++){
         printf ("buffer element: %d\n", buffer[y].UID2);
       };
+      */
 
       if ((num_block+1 == test) && (chunk_size % block_size != 0)){
         block_elements = (chunk_size % block_size) / sizeof(Record);
 
         result = fread(block_buffer, sizeof(Record), block_elements, fp_read);
 
+        /*
         int y;
         for (y=0; y < 9; y++){
           printf ("block_buffer element: %d\n", block_buffer[y].UID2);
         };
 
-        //printf("add records\n");
-
         printf("block e: %d\n", block_elements);
+        */
+
         int j;
         for (j=0; j < block_elements; j++) {
 
@@ -151,11 +150,12 @@ int main(int argc, char *argv[]){
           buffer[buffer_i].UID2 = block_buffer[j].UID2;
           buffer_i++;
         };
-        // printf("added\n");
 
+        /*
         for (y=0; y < 9; y++){
           printf ("buffer element: %d\n", buffer[y].UID2);
         };
+        */
 
       };
 
