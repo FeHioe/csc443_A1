@@ -64,7 +64,7 @@ int main(int argc, char *argv[]){
   }
   // get file size
   fseek(fp_read, 0, SEEK_END);
-  int file_size = ftell(fp_read);
+  int filesize = ftell(fp_read);
   fseek(fp_read, 0, SEEK_SET);
   
   // Check if total memory is sufficient 
