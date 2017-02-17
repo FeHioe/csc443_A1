@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 /**
 * Compares two records a and b 
@@ -80,9 +81,10 @@ int main(int argc, char *argv[]){
   int k = ceil(filesize / total_mem);
 
   // Determine chunk size
-  int chunk_size = ceil(file_size / k);
+  int chunk_size = ceil(filesize / k);
 
   int i;
+  char str[1024];
   for (i=0 ; i < k; i ++){
     // Align chunk with block size 
     Record *buffer = (Record*) calloc (chunk_size, sizeof(Record));
