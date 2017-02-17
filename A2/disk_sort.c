@@ -107,11 +107,10 @@ int main(int argc, char *argv[]){
       num_block++;
 
       //printf("read\n");
-      /*
-      if (num_block == (chunk_size/block_size) && (chunk_size % block_size != 0)){
+      if (num_block+1 == (chunk_size/block_size) && (chunk_size % block_size != 0)){
         block_elements = (chunk_size % block_size) / sizeof(Record);
       };
-      */
+
       int y;
       for (y=0; y < 9; y++){
         printf ("block_buffer element: %d\n", block_buffer[y].UID2);
