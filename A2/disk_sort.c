@@ -82,7 +82,7 @@ int main(int argc, char *argv[]){
   printf("filesize: %d total_mem: %d k: %d\n", filesize, total_mem, k);
 
   // Determine chunk size
-  int chunk_size = ceil(filesize / k);
+  int chunk_size = ceil((float)filesize / k);
 
   int i;
   char str[1024];
@@ -96,7 +96,8 @@ int main(int argc, char *argv[]){
 
     int num_block = 0;
     int block_elements = block_size / sizeof(Record);
-    printf("before read");
+    printf("before read\n");
+    printf("chunk: %d block: %d\n", );
     while ( (result = fread(block_buffer, sizeof(Record), block_elements, fp_read) > 0) 
       && (num_block <= (chunk_size/block_size)) ){
       num_block++;
@@ -111,6 +112,7 @@ int main(int argc, char *argv[]){
       int j;
       Record *record_ptr = buffer;
       for (j=0; j < block_elements; j++) {
+
         record_ptr->UID1 = block_buffer[j].UID1;
         record_ptr->UID2 = block_buffer[j].UID2;
         record_ptr++;
@@ -119,7 +121,7 @@ int main(int argc, char *argv[]){
 
     };
 
-    sort_array_by_uid2(buffer, ceil(chunk_size/sizeof(Record)));
+    sort_array_by_uid2(buffer, ceil((float)chunk_size/sizeof(Record)));
     sprintf(str, "sublist%d.dat", i);
 
     if (!(fp_write = fopen(str, "wb"))){
@@ -127,7 +129,7 @@ int main(int argc, char *argv[]){
       exit(1);
     }
 
-    fwrite(buffer, sizeof(Record), ceil(chunk_size/sizeof(Record)), fp_write);
+    fwrite(buffer, sizeof(Record), ceil((float)chunk_size/sizeof(Record)), fp_write);
     fclose(fp_write);
     free(block_buffer);
     free(buffer);
