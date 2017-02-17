@@ -75,37 +75,78 @@ int main(int argc, char *argv[]){
 		printf("file cannot be sorted given the available memory\n");
 		exit(1);
   }
-  
-  int num_records_in_blocksize = block_size/sizeof(Record);
-  
-  // ?
-  int max_num_records = (total_mem * total_mem) / (sizeof(Record) * block_size); 
-  
-  if (max_num_records < total_block_num){ //double check this
-    printf("Error not enough memory\n");
-    exit(1);
+
+  // Partition into K chunks of maximum possible size
+  int k = ceil(filesize / total_mem);
+
+  // Determine chunk size
+  int chunk_size = ceil(file_size / k);
+
+  int i;
+  for (i=0 ; i < k; i ++){
+    // Align chunk with block size 
+    Record *buffer = (Record*) calloc (chunk_size, sizeof(Record));
+    Record *block_buffer = (Record*) calloc (block_size, sizeof(Record));
+
+    int num_block = 0;
+    int block_elements = block_size / sizeof(Record);
+    while ( (result = fread(block_buffer, sizeof(Record), block_elements, fp_read) > 0) 
+      && (num_block <= (chunk_size/block_size)) ){
+      num_block++;
+
+      if (num_block == (chunk_size/block_size) && (chunk_size % block_size != 0)){
+        block_elements = (chunk_size % block_size) / sizeof(Record);
+      };
+
+      int j;
+      Record *record_ptr = buffer;
+      for (j=0; i < block_elements; j++) {
+        record_ptr->UID1 = block_buffer[j].UID1;
+        record_ptr->UID2 = block_buffer[j].UID2;
+        record_ptr++;
+      };
+
+    };
+
+    sort_array_by_uid2(buffer, ceil(chunk_size/sizeof(Record)));
+    sprintf(str, "sublist%d.dat", i);
+
+    if (!(fp_write = fopen(str, "wb"))){
+      printf("Error: could not open file for write.");
+      exit(1);
+    }
+
+    fwrite(buffer, sizeof(Record), ceil(chunk_size/sizeof(Record)), fp_write);
+    fflush(fp_write);
+    free(block_buffer);
+    free(buffer);
   };
   
-  // Partition into K chunks of maximum possible size
+
+  /*
   int i = 1;
   char str[1024];
-   // TODO: data should be read and written in terms of blocks
-   // need to align blocks and records
   Record * buffer = (Record *) calloc(total_mem/sizeof(Record), sizeof(Record));
+
   while ((result = fread(buffer, sizeof(Record), total_mem/sizeof(Record), fp_read)) > 0){ 
-  		sort_array_by_uid2(buffer, result);
+
+  	sort_array_by_uid2(buffer, result);
    	sprintf(str, "sublist%d.dat", i);
-    	if (!(fp_write = fopen(str, "wb"))){
-      	printf("Error: could not open file for write.");
-      	exit(1);
-    	}
-    	fwrite(buffer, sizeof(Record), result, fp_write);
-    	fclose(fp_write);
-      i++; 
+
+    if (!(fp_write = fopen(str, "wb"))){
+      printf("Error: could not open file for write.");
+      exit(1);
+    }
+
+    fwrite(buffer, sizeof(Record), result, fp_write);
+    fclose(fp_write);
+    i++; 
+
   }
-  
+  */
+
   fclose(fp_read);
-  free(buffer);
+  fclose(fp_write);
   
   return 0;
   
