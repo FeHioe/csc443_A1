@@ -105,11 +105,10 @@ int main(int argc, char *argv[]){
 
     while ((num_block <= test ) ){
       printf("num_block: %d\n", num_block);
-      num_block++;
 
       //printf("read\n");
       
-      if (num_block == test && (chunk_size % block_size != 0)){
+      if ((num_block == test) && (chunk_size % block_size != 0)){
         block_elements = (chunk_size % block_size) / sizeof(Record);
       };
       
@@ -150,6 +149,8 @@ int main(int argc, char *argv[]){
     fclose(fp_write);
     free(block_buffer);
     free(buffer);
+
+    num_block++;
   };
   
 
