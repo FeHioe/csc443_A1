@@ -99,9 +99,11 @@ int main(int argc, char *argv[]){
     int test = ((int)chunk_size/block_size);
     printf("before read\n");
     printf("chunk: %d block: %d test:%d\n", chunk_size, block_size, test);
-    while ( (result = fread(block_buffer, sizeof(Record), block_elements, fp_read) > 0) && (num_block <= test ) ){
+    while ( (num_block <= test ) ){
       num_block++;
 
+      result = fread(block_buffer, sizeof(Record), block_elements, fp_read);
+      printf("result\n");
       printf("read\n");
 
       if (num_block == (chunk_size/block_size) && (chunk_size % block_size != 0)){
