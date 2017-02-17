@@ -63,9 +63,9 @@ int main(int argc, char *argv[]){
     exit(1);
   }
   // get file size
-  fseek(fp_read, 0, SEEK_END);
-  int filesize = ftell(fp_read);
-  fseek(fp_read, 0, SEEK_SET);
+  fseek(fp_read, 0L, SEEK_END);
+  filesize = ftell(fp_read);
+  fseek(fp_read, 0L, SEEK_SET);
   
   // Check if total memory is sufficient 
   int total_block_num = total_mem/block_size; // M
@@ -99,11 +99,9 @@ int main(int argc, char *argv[]){
     int test = ((int)chunk_size/block_size);
     printf("before read\n");
     printf("chunk: %d block: %d test:%d\n", chunk_size, block_size, test);
-    while ( (num_block <= test ) ){
+    while ( (result = fread(block_buffer, sizeof(Record), block_elements, fp_read) > 0) && (num_block <= test ) ){
       num_block++;
 
-      result = fread(block_buffer, sizeof(Record), block_elements, fp_read);
-      printf("result: %d\n", result);
       printf("read\n");
 
       if (num_block == (chunk_size/block_size) && (chunk_size % block_size != 0)){
