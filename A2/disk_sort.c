@@ -96,10 +96,11 @@ int main(int argc, char *argv[]){
 
     int num_block = 0;
     int block_elements = block_size / sizeof(Record);
+    int test = ((int)chunk_size/block_size));
     printf("before read\n");
-    printf("chunk: %d block: %d\n", chunk_size, block_size);
+    printf("chunk: %d block: %d test:%d\n", chunk_size, block_size, test);
     while ( (result = fread(block_buffer, sizeof(Record), block_elements, fp_read) > 0) 
-      && (num_block <= ((int)chunk_size/block_size)) ){
+      && (num_block <= test ){
       num_block++;
 
       printf("read\n");
