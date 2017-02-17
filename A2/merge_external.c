@@ -122,6 +122,7 @@ int insert_into_heap (MergeManager * merger, int run_id, Record *input){
 */
 
 int init_merge (MergeManager * manager) {
+	
 	return SUCCESS;
 }
 

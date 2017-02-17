@@ -27,7 +27,7 @@ void sort_array_by_uid2(Record * buffer, int total_records) {
 	};
 };
 
-int main(int argc, char *argv[]){
+int phase1(char *filename, int total_mem, int block_size){
   /* PART 1
 	char *filename = argv[1];
 	int block_size = atoi(argv[2]);
@@ -50,18 +50,22 @@ int main(int argc, char *argv[]){
   return 0;
   */
   
-  char *filename = argv[1];
-  int total_mem = atoi(argv[2]); // add plus 5MB
-  int block_size = atoi(argv[3]);
   FILE *fp_read;
   FILE * fp_write;
-  int result;
   int filesize;
+  int result;  
+  
+  
+  if (block_size > total_mem){
+	 printf("Error: Block size must be smaller than total memory.\n");
+    exit(1);
+  };  
   
   if (!(fp_read = fopen(filename, "rb"))) {
     printf("Error: could not open file for read.\n");
     exit(1);
   }
+  
   // get file size
   fseek(fp_read, 0L, SEEK_END);
   filesize = ftell(fp_read);
@@ -84,7 +88,8 @@ int main(int argc, char *argv[]){
 
   // Determine chunk size
   int chunk_size = ceil((float)filesize / k);
-
+ 
+ printf("chunk size: %d\n", chunk_size);
   int i;
   char str[1024];
   for (i=0 ; i < k; i ++){
@@ -94,24 +99,26 @@ int main(int argc, char *argv[]){
 
     int num_block = 0;
     int block_elements = block_size / sizeof(Record);
-    int test = ((int)chunk_size/block_size);
+    int test = ceil(((float)chunk_size/block_size));
     int buffer_i = 0;
 
     //printf("record size: %d\n", sizeof(Record));
-    //printf("chunk: %d block: %d test:%d block e: %d\n", chunk_size, block_size, test, block_elements);
+    printf("chunk: %d block: %d test:%d block e: %d\n", chunk_size, block_size, test, block_elements);
 
     while (num_block < test){
       //printf("num_block: %d\n", num_block);      
       
-      result = fread(block_buffer, sizeof(Record), block_elements, fp_read);
+      if (result = fread(block_buffer, sizeof(Record), block_elements, fp_read) < 0){
+      	printf("Read Error\n");
+      };
 
-      /*
+      
       int y;
       for (y=0; y < 9; y++){
         printf ("block_buffer element: %d\n", block_buffer[y].UID2);
       };
-      */
-      //printf("block e: %d\n", block_elements);
+      
+      printf("block e: %d\n", block_elements);
 
       int j;
       for (j=0; j < block_elements; j++) {
@@ -121,25 +128,28 @@ int main(int argc, char *argv[]){
         buffer_i++;
       };
 
-      /*
+      
       for (y=0; y < 9; y++){
         printf ("buffer element: %d\n", buffer[y].UID2);
       };
-      */
+      
 
       if ((num_block+1 == test) && (chunk_size % block_size != 0)){
         block_elements = (chunk_size % block_size) / sizeof(Record);
 
-        result = fread(block_buffer, sizeof(Record), block_elements, fp_read);
+        if (result = fread(block_buffer, sizeof(Record), block_elements, fp_read) < 0 ){
+      	printf("Read Error\n");
+        };
 
-        /*
+
+        
         int y;
         for (y=0; y < 9; y++){
           printf ("block_buffer element: %d\n", block_buffer[y].UID2);
         };
 
         printf("block e: %d\n", block_elements);
-        */
+        
 
         int j;
         for (j=0; j < block_elements; j++) {
@@ -149,11 +159,11 @@ int main(int argc, char *argv[]){
           buffer_i++;
         };
 
-        /*
+        
         for (y=0; y < 9; y++){
           printf ("buffer element: %d\n", buffer[y].UID2);
         };
-        */
+        
 
       };
 
@@ -200,6 +210,6 @@ int main(int argc, char *argv[]){
 
   fclose(fp_read);
   
-  return 0;
+  return k;
   
 }
