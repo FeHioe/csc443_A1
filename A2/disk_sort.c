@@ -68,8 +68,6 @@ int main(int argc, char *argv[]){
   rewind(fp_read);
 
   // Check if total memory is sufficient 
-
-  /*
   int total_block_num = total_mem/block_size; // M
   int B = filesize/block_size;
   printf("B is %d\n", B);
@@ -78,7 +76,7 @@ int main(int argc, char *argv[]){
 		printf("file cannot be sorted given the available memory\n");
 		exit(1);
   }
-  */
+
 
   // Partition into K chunks of maximum possible size
   int k = ceil((float)filesize / total_mem);
