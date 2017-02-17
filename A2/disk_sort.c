@@ -90,13 +90,14 @@ int main(int argc, char *argv[]){
     // Align chunk with block size 
 
     printf ("before buffers\n");
-    Record *buffer = (Record*) malloc (chunk_size);
-    Record *block_buffer = (Record*) malloc (block_size);
+    Record *buffer = (Record*) calloc (chunk_size, sizeof(Record));
+    Record *block_buffer = (Record*) calloc (block_size, sizeof(Record));
     printf("after buffers\n");
 
     int num_block = 0;
     int block_elements = block_size / sizeof(Record);
     int test = ((int)chunk_size/block_size);
+    int buffer_i = 0;
 
     printf("before read\n");
     printf("record size: %d\n", sizeof(Record));
@@ -113,12 +114,11 @@ int main(int argc, char *argv[]){
 
       printf("add records\n");
       int j;
-      Record *record_ptr = buffer;
       for (j=0; j < block_elements; j++) {
 
-        record_ptr->UID1 = block_buffer[j].UID1;
-        record_ptr->UID2 = block_buffer[j].UID2;
-        record_ptr++;
+        buffer[buffer_i]->UID1 = block_buffer[j].UID1;
+        buffer[buffer_i]->UID2 = block_buffer[j].UID2;
+        buffer_i++;
       };
       printf("added\n");
 
