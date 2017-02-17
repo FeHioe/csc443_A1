@@ -105,7 +105,7 @@ int main(int argc, char *argv[]){
       printf("read\n");
 
       if (num_block == (chunk_size/block_size) && (chunk_size % block_size != 0)){
-        block_elements = (chunk_size % block_size) / sizeof(Record);
+        block_elements = ((int)chunk_size % block_size) / sizeof(Record);
       };
 
       printf("add records\n");
