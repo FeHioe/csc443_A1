@@ -65,7 +65,7 @@ int main(int argc, char *argv[]){
   // get file size
   fseek(fp_read, 0L, SEEK_END);
   filesize = ftell(fp_read);
-  rewind(fp_read);
+  fseek(fp_read, 0, SEEK_SET);
   
   // Check if total memory is sufficient 
   int total_block_num = total_mem/block_size; // M
