@@ -78,7 +78,7 @@ int main(int argc, char *argv[]){
   }
 
   // Partition into K chunks of maximum possible size
-  int k = ceil(filesize / total_mem);
+  int k = ceil((float)filesize / total_mem);
   printf("filesize: %d total_mem: %d k: %d\n", filesize, total_mem, k);
 
   // Determine chunk size
