@@ -118,6 +118,8 @@ int main(int argc, char *argv[]){
       };
 
       //printf("add records\n");
+
+      printf("block e: %d\n", block_elements);
       int j;
       for (j=0; j < block_elements; j++) {
 
