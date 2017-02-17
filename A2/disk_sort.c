@@ -67,11 +67,6 @@ int main(int argc, char *argv[]){
   filesize = ftell(fp_read);
   rewind(fp_read);
 
-  Record *block_buffer = (Record*) calloc (block_size, sizeof(Record));
-  result = fread(block_buffer, sizeof(Record), block_size / sizeof(Record), fp_read);
-
-  printf("result: %d\n", result);
-
   // Check if total memory is sufficient 
   int total_block_num = total_mem/block_size; // M
   int B = filesize/block_size;
@@ -103,7 +98,7 @@ int main(int argc, char *argv[]){
     int block_elements = block_size / sizeof(Record);
     int test = ((int)chunk_size/block_size);
     printf("before read\n");
-    printf("chunk: %d block: %d test:%d\n", chunk_size, block_size, test);
+    printf("chunk: %d block: %d test:%d block e: %d\n", chunk_size, block_size, test, block_elements);
     while ( (result = fread(block_buffer, sizeof(Record), block_elements, fp_read) > 0) && (num_block <= test ) ){
       num_block++;
 
