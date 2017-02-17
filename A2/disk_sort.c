@@ -103,7 +103,7 @@ int main(int argc, char *argv[]){
       num_block++;
 
       result = fread(block_buffer, sizeof(Record), block_elements, fp_read);
-      printf("result\n");
+      printf("result: %d\n", result);
       printf("read\n");
 
       if (num_block == (chunk_size/block_size) && (chunk_size % block_size != 0)){
