@@ -95,7 +95,7 @@ int main(int argc, char *argv[]){
 
     int num_block = 0;
     int block_elements = block_size / sizeof(Record);
-    printf("before read")
+    printf("before read");
     while ( (result = fread(block_buffer, sizeof(Record), block_elements, fp_read) > 0) 
       && (num_block <= (chunk_size/block_size)) ){
       num_block++;
