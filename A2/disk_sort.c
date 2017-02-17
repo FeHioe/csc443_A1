@@ -119,7 +119,7 @@ int main(int argc, char *argv[]){
     }
 
     fwrite(buffer, sizeof(Record), ceil(chunk_size/sizeof(Record)), fp_write);
-    fflush(fp_write);
+    close(fp_write);
     free(block_buffer);
     free(buffer);
   };
@@ -148,7 +148,6 @@ int main(int argc, char *argv[]){
   */
 
   fclose(fp_read);
-  fclose(fp_write);
   
   return 0;
   
