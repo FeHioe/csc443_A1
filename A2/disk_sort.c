@@ -66,9 +66,12 @@ int main(int argc, char *argv[]){
   fseek(fp_read, 0L, SEEK_END);
   filesize = ftell(fp_read);
   rewind(fp_read);
-  
+
+  Record *block_buffer = (Record*) calloc (block_size, sizeof(Record));
   result = fread(block_buffer, sizeof(Record), block_elements, fp_read)
+
   printf("result: \n", result);
+  
   // Check if total memory is sufficient 
   int total_block_num = total_mem/block_size; // M
   int B = filesize/block_size;
