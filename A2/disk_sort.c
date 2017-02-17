@@ -103,12 +103,12 @@ int main(int argc, char *argv[]){
     printf("record size: %d\n", sizeof(Record));
     printf("chunk: %d block: %d test:%d block e: %d\n", chunk_size, block_size, test, block_elements);
 
-    while ((num_block <= test ) ){
+    while ((num_block < test ) ){
       printf("num_block: %d\n", num_block);
 
       //printf("read\n");
       
-      if ((num_block == test) && (chunk_size % block_size != 0)){
+      if ((num_block+1 == test) && (chunk_size % block_size != 0)){
         block_elements = (chunk_size % block_size) / sizeof(Record);
       };
       
@@ -136,7 +136,7 @@ int main(int argc, char *argv[]){
       };
 
       num_block++;
-      
+
     };
 
     sort_array_by_uid2(buffer, ceil((float)chunk_size/sizeof(Record)));
