@@ -99,13 +99,13 @@ int main(int argc, char *argv[]){
     printf("before read\n");
     printf("chunk: %d block: %d\n", chunk_size, block_size);
     while ( (result = fread(block_buffer, sizeof(Record), block_elements, fp_read) > 0) 
-      && (num_block <= (chunk_size/block_size)) ){
+      && (num_block <= ((int)chunk_size/block_size)) ){
       num_block++;
 
       printf("read\n");
 
       if (num_block == (chunk_size/block_size) && (chunk_size % block_size != 0)){
-        block_elements = ((int)chunk_size % block_size) / sizeof(Record);
+        block_elements = (chunk_size % block_size) / sizeof(Record);
       };
 
       printf("add records\n");
