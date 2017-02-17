@@ -127,6 +127,11 @@ int main(int argc, char *argv[]){
       };
      // printf("added\n");
 
+      int y;
+      for (y=0; y < 9; y++){
+        printf ("buffer element: %d\n", buffer[y].UID2);
+      };
+
     };
 
     sort_array_by_uid2(buffer, ceil((float)chunk_size/sizeof(Record)));
