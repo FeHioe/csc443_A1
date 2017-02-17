@@ -127,7 +127,6 @@ int main(int argc, char *argv[]){
       };
      // printf("added\n");
 
-      int y;
       for (y=0; y < 9; y++){
         printf ("buffer element: %d\n", buffer[y].UID2);
       };
