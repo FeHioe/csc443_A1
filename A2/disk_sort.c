@@ -114,7 +114,7 @@ int main(int argc, char *argv[]){
 
       int y;
       for (y=0; y < 9; y++){
-        printf ("block_buffer element: %d\n", block_buffer[y]);
+        printf ("block_buffer element: %d\n", block_buffer[y].UID2);
       };
 
       //printf("add records\n");
