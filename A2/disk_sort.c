@@ -116,8 +116,8 @@ int main(int argc, char *argv[]){
       int j;
       for (j=0; j < block_elements; j++) {
 
-        buffer[buffer_i]->UID1 = block_buffer[j].UID1;
-        buffer[buffer_i]->UID2 = block_buffer[j].UID2;
+        buffer[buffer_i].UID1 = block_buffer[j].UID1;
+        buffer[buffer_i].UID2 = block_buffer[j].UID2;
         buffer_i++;
       };
       printf("added\n");
