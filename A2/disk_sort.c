@@ -104,6 +104,7 @@ int main(int argc, char *argv[]){
     printf("chunk: %d block: %d test:%d block e: %d\n", chunk_size, block_size, test, block_elements);
 
     while ((num_block <= test ) ){
+      printf("num_block: %d\n", num_block);
       num_block++;
 
       //printf("read\n");
