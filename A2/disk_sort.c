@@ -103,7 +103,7 @@ int main(int argc, char *argv[]){
     printf("record size: %d\n", sizeof(Record));
     printf("chunk: %d block: %d test:%d block e: %d\n", chunk_size, block_size, test, block_elements);
 
-    while ( (result = fread(block_buffer, sizeof(Record), block_elements, fp_read) > 0) && (num_block < test ) ){
+    while ((num_block < test ) && (result = fread(block_buffer, sizeof(Record), block_elements, fp_read) > 0) ){
       num_block++;
 
       //printf("read\n");
