@@ -135,6 +135,8 @@ int main(int argc, char *argv[]){
         printf ("buffer element: %d\n", buffer[y].UID2);
       };
 
+      num_block++;
+      
     };
 
     sort_array_by_uid2(buffer, ceil((float)chunk_size/sizeof(Record)));
@@ -149,8 +151,6 @@ int main(int argc, char *argv[]){
     fclose(fp_write);
     free(block_buffer);
     free(buffer);
-
-    num_block++;
   };
   
 
