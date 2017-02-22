@@ -127,10 +127,51 @@ int init_merge (MergeManager * manager) {
 }
 
 int flush_output_buffer (MergeManager * manager) {
+	if (fwrite(manager->output_buffer, sizeof(Record), manager->output_buffer_capacity, manager->outputFP) != manager->output_buffer_capacity) {
+		printf("ERROR: output buffer could not be written to disk");
+		return FAILURE;
+	}
+	fflush(manager->outputFP);
+	current_output_buffer_position = 0;
 	return SUCCESS;
 }
 
 int get_next_input_element(MergeManager * manager, int file_number, Record *result) {
+	// See if the corresponding input buffer has anything left
+	if (manager->total_input_buffer_elements[file_number] < 0) {
+		printf( "Unexpected ERROR: negative number of elements in input buffer\n");
+		return FAILURE;
+	}
+
+	if (manager->total_input_buffer_elements[file_number] == 0) {
+		sprintf(str, "sublist%d.dat", file_number);
+		if (!(fp_read = fopen(str, "rb"))) {
+    		printf("Error: could not open file for read.\n");
+    		exit(1);
+  		};
+  		fseek(fp_read, manager->current_input_filepositions[file_number], SEEK_SET);
+  		num_elements_read = fread(manager->input_buffers[file_number], sizeof(Record), manager->input_buffer_capacity, fp_read);
+
+  		if (num_elements_read < 1) {
+  			fclose(fp_read);
+  			manager->total_input_buffer_elements[file_number] = 0;
+  			manager->current_input_file_positions[file_number] = -1;
+  			manager->current_input_buffer_positions[file_number] = -1;
+  			printf("file exhausted");
+  			return EMPTY;
+  		}
+  		manager->total_input_buffer_elements[file_number] = num_elements_read;
+  		manager->current_input_file_positions[file_number] += ftell(fp_read);
+  		manager->current_input_buffer_positions[file_number] = 0;
+  		fclose(fp_read);
+  	}
+
+	current_buffer_pos = manager->current_input_buffer_positions[file_number];
+	*result = manager->input_buffers[file_number][current_buffer_pos];
+	manager->current_input_buffer_positions[file_number]++;
+	manager->total_input_buffer_elements[file_number]--;
+	
+	}
 	return SUCCESS;
 }
 
@@ -139,7 +180,19 @@ int refill_buffer (MergeManager * manager, int file_number) {
 }
 
 void clean_up (MergeManager * merger) {
-	
+	fclose(manager->outputFP);
+	free(manager->heap);
+	free(manager->inputFP);
+	free(manager->input_file_numbers);
+	free(manager->output_buffer);
+	for (int i = 0; i < manager->input_buffer_capacity; i++) {
+		free(manager->input_buffers[i]);
+	}
+	free(manager->input_buffers);
+	free(manager->current_input_file_positions);
+	free(manager->current_input_buffer_positions);
+	free(manager->total_input_buffer_elements);
+	free(manager);
 }
 
 int compare_heap_elements (HeapElement *a, HeapElement *b) {
