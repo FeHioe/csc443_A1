@@ -175,6 +175,7 @@ int get_next_input_element(MergeManager * manager, int file_number, Record *resu
 	return SUCCESS;
 }
 
+
 int refill_buffer (MergeManager * manager, int file_number) {
 	return SUCCESS;
 }
