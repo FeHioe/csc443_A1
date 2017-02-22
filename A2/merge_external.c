@@ -195,7 +195,7 @@ void clean_up (MergeManager * merger) {
 	free(manager->total_input_buffer_elements);
 	free(manager);
 }
-
+// if a bigger than b, return greater than 0
 int compare_heap_elements (HeapElement *a, HeapElement *b) {
-	return 0;
+	return (a->UID2 - b->UID2);
 }
