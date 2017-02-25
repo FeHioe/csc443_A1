@@ -122,7 +122,7 @@ int insert_into_heap (MergeManager * merger, int run_id, Record *input){
 */
 
 int init_merge (MergeManager * manager) { 
-	
+
 	sublist_num = manager->num_input_buffers;
 	block_size = manager->block_size;
 	total_mem = manager->total_mem;
@@ -222,7 +222,8 @@ int get_next_input_element(MergeManager * manager, int file_number, Record *resu
   			manager->total_input_buffer_elements[file_number] = 0;
   			manager->current_input_file_positions[file_number] = -1;
   			manager->current_input_buffer_positions[file_number] = -1;
-  			printf("file exhausted");
+  			manager->heap_capacity--;
+  			printf("file exhausted, one run done");
   			return EMPTY;
   		}
   		manager->total_input_buffer_elements[file_number] = num_elements_read;
