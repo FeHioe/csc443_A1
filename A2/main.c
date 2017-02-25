@@ -2,14 +2,12 @@
 #include "disk_sort.c"
 
 int main (int argc, char **argv) {
+
 	//process and validate command-line arguments
-	
 	char *filename = argv[1];
 	int total_mem = atoi(argv[2]);
 	int block_size = atoi(argv[3]);
 	
-	FILE *input_file;
-	FILE *fp_read;
 	MergeManager * manager = (MergeManager *) malloc(sizeof(MergeManager));
 	
 	int sublist_num = phase1(filename, total_mem, block_size);

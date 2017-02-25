@@ -122,9 +122,13 @@ int insert_into_heap (MergeManager * merger, int run_id, Record *input){
 */
 
 int init_merge (MergeManager * manager) { 
+	
 	sublist_num = manager->num_input_buffers;
 	block_size = manager->block_size;
 	total_mem = manager->total_mem;
+
+	FILE *input_file;
+	FILE *fp_read;
 
 	int blocks_per_mem = total_mem/block_size;	
 	Record *output_buffer = (Record *) calloc(block_size/sizeof(Record), sizeof(Record));	
