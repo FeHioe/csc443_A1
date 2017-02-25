@@ -91,7 +91,6 @@ int insert_into_heap (MergeManager * merger, int run_id, Record *input){
 
 	HeapElement new_heap_element;
 	int child, parent;
-
 	new_heap_element.UID1 = input->UID1;
 	new_heap_element.UID2 = input->UID2;
 	new_heap_element.run_id = run_id;
@@ -128,11 +127,11 @@ int init_merge (MergeManager * manager) {
 	int total_mem = manager->total_mem;
 	int num_elements_read;
 	int current_input_buffer_pos;
-	FILE *input_file;
 	FILE *fp_read;
 
 	int blocks_per_mem = total_mem/block_size;	
 	Record *output_buffer = (Record *) calloc(block_size/sizeof(Record), sizeof(Record));	
+	manager->output_buffer = output_buffer;
 	manager->output_buffer_capacity = block_size/sizeof(Record);
 	printf("output buf assigned\n");	
 	

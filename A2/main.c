@@ -1,6 +1,5 @@
+#include "disk_sort.h"
 #include "merge.h"
-#include "merge_external.c"
-#include "disk_sort.c"
 
 int main (int argc, char **argv) {
 

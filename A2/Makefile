@@ -8,16 +8,16 @@ CFLAGS += -D_FILE_OFFSET_BITS=64
  
 # Source files
 DISK_SORT_SRC=merge.h disk_sort.c
-MAIN_SRC=merge.h merge_external.c main.c
+MAIN_SRC= merge.h merge_external.c disk_sort.c main.c
 
 # Binaries
 all: disk_sort main_merge
  
 #sequential writing in blocks
 disk_sort: $(DISK_SORT_SRC)
-	$(CC) $(CFLAGS) $^ -o $@ -lm
+	$(CC) $(CFLAGS) $^ $@ 
 main_merge: $(MAIN_SRC)
-	$(CC) $(CFLAGS) $^ -o $@ -lm
+	$(CC) $(CFLAGS) $^ -o $@ -lm -std=c99
 
 clean:  
 	rm disk_sort main_merge

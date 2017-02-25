@@ -1,4 +1,4 @@
-#include "merge.h"
+#include "disk_sort.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
