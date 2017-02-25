@@ -1,4 +1,5 @@
 #include "merge.h"
+#include "merge_external.c"
 #include "disk_sort.c"
 
 int main (int argc, char **argv) {
@@ -19,6 +20,6 @@ int main (int argc, char **argv) {
 	manager->total_mem = total_mem;
 
  	int result = merge_runs(manager);
- 	printf("%d");
+ 	printf("%d", result);
 	return 0;
 }

@@ -123,10 +123,11 @@ int insert_into_heap (MergeManager * merger, int run_id, Record *input){
 
 int init_merge (MergeManager * manager) { 
 
-	sublist_num = manager->num_input_buffers;
-	block_size = manager->block_size;
-	total_mem = manager->total_mem;
-
+	int sublist_num = manager->num_input_buffers;
+	int block_size = manager->block_size;
+	int total_mem = manager->total_mem;
+	int num_elements_read;
+	int current_input_buffer_pos;
 	FILE *input_file;
 	FILE *fp_read;
 
@@ -141,8 +142,8 @@ int init_merge (MergeManager * manager) {
 	if (blocks_per_input_buf < 1 ) {
 		printf("Error: must have one block per input buffer.");
 		return FAILURE;
-	}; 	
-	manager->output_file_name = "output.dat";
+	}
+	strcpy(manager->output_file_name, "output.dat");
 	if (!(manager->outputFP = fopen(manager->output_file_name, "wb"))){
       printf("Error: could not open file for write.");
       return FAILURE;
@@ -151,7 +152,7 @@ int init_merge (MergeManager * manager) {
 	int i;
 	char str[1024];
 	
-	manager->input_buffers = (Record *) malloc(sublist_num * sizeof(Record *));
+	manager->input_buffers = (Record **) malloc(sublist_num * sizeof(Record *));
 	printf("input buf assigned\n");	
 		
 	manager->current_input_file_positions = (int *) malloc(sublist_num * sizeof(int *));
@@ -172,7 +173,6 @@ int init_merge (MergeManager * manager) {
   		manager->total_input_buffer_elements[i] = num_elements_read;
   		manager->current_input_file_positions[i] = ftell(fp_read);
   		manager->current_input_buffer_positions[i] = 0;
-  		total_input_buffer_elements
   		fclose(fp_read);
 		printf("read\n");		
 	};	
@@ -183,9 +183,9 @@ int init_merge (MergeManager * manager) {
  	manager->heap_capacity = sublist_num;
 
  	for (i=0; i < sublist_num; i++) {
- 		current_input_buffer_pos = manager->current_input_buffer_pos[i];
- 		insert_into_heap(manager, i, manager->input_buffers[i][current_input_buffer_pos]);
- 		manager->current_input_buffer_pos[i]++; // increment buffer position for this input buffer
+ 		current_input_buffer_pos = manager->current_input_buffer_positions[i];
+ 		insert_into_heap(manager, i, (&manager->input_buffers[i][current_input_buffer_pos]));
+ 		manager->current_input_buffer_positions[i]++; // increment buffer position for this input buffer
  	}
 	
 	return SUCCESS;
@@ -197,11 +197,15 @@ int flush_output_buffer (MergeManager * manager) {
 		return FAILURE;
 	}
 	fflush(manager->outputFP);
-	current_output_buffer_position = 0;
+	manager->current_output_buffer_position = 0;
 	return SUCCESS;
 }
 
 int get_next_input_element(MergeManager * manager, int file_number, Record *result) {
+	int num_elements_read;
+	char str[1024];
+	int current_buffer_pos;
+	FILE *fp_read;
 	// See if the corresponding input buffer has anything left
 	if (manager->total_input_buffer_elements[file_number] < 0) {
 		printf( "Unexpected ERROR: negative number of elements in input buffer\n");
@@ -214,7 +218,7 @@ int get_next_input_element(MergeManager * manager, int file_number, Record *resu
     		printf("Error: could not open file for read.\n");
     		exit(1);
   		};
-  		fseek(fp_read, manager->current_input_filepositions[file_number], SEEK_SET);
+  		fseek(fp_read, manager->current_input_file_positions[file_number], SEEK_SET);
   		num_elements_read = fread(manager->input_buffers[file_number], sizeof(Record), manager->input_buffer_capacity, fp_read);
 
   		if (num_elements_read < 1) {
@@ -237,7 +241,6 @@ int get_next_input_element(MergeManager * manager, int file_number, Record *resu
 	manager->current_input_buffer_positions[file_number]++;
 	manager->total_input_buffer_elements[file_number]--;
 	
-	}
 	return SUCCESS;
 }
 
@@ -246,7 +249,7 @@ int refill_buffer (MergeManager * manager, int file_number) {
 	return SUCCESS;
 }
 
-void clean_up (MergeManager * merger) {
+void clean_up (MergeManager * manager) {
 	fclose(manager->outputFP);
 	free(manager->heap);
 	free(manager->inputFP);

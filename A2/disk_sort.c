@@ -46,7 +46,7 @@ int phase1(char *filename, int total_mem, int block_size){
 		exit(1);
 	}
 	sort_array_by_uid2(buffer, total_records);
-
+{
   return 0;
   */
   
@@ -108,7 +108,7 @@ int phase1(char *filename, int total_mem, int block_size){
     while (num_block < test){
       //printf("num_block: %d\n", num_block);      
       
-      if (result = fread(block_buffer, sizeof(Record), block_elements, fp_read) < 0){
+      if ((result = fread(block_buffer, sizeof(Record), block_elements, fp_read)) < 0){
       	printf("Read Error\n");
       };
 
@@ -137,7 +137,7 @@ int phase1(char *filename, int total_mem, int block_size){
       if ((num_block+1 == test) && (chunk_size % block_size != 0)){
         block_elements = (chunk_size % block_size) / sizeof(Record);
 
-        if (result = fread(block_buffer, sizeof(Record), block_elements, fp_read) < 0 ){
+        if ((result = fread(block_buffer, sizeof(Record), block_elements, fp_read)) < 0){
       	printf("Read Error\n");
         };
 
