@@ -42,6 +42,10 @@ typedef struct merge_manager {
 	int heap_capacity;  //corresponds to the total number of runs (input buffers)
 	char output_file_name [MAX_PATH_LENGTH]; //stores name of the file to which to write the final output
 	char input_prefix [MAX_PATH_LENGTH] ; //stores the prefix of a path to each run - to concatenate with run id and to read the file
+	/* added extra attributes */
+	int num_input_buffers;
+	int block_size;
+	int total_mem;
 }MergeManager;
 
 //1. main loop
