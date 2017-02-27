@@ -3,7 +3,7 @@
 //manager fields should be already initialized in the caller
 int merge_runs (MergeManager * merger){	
 	int  result; //stores SUCCESS/FAILURE returned at the end	
-	
+	printf("*************IN MERGE RUNS *************\n"); 
 	//1. go in the loop through all input files and fill-in initial buffers
 	if (init_merge (merger)!=SUCCESS)
 		return FAILURE;
@@ -26,16 +26,16 @@ int merge_runs (MergeManager * merger){
 		}		
 
 
-		merger->output_buffer [merger->current_output_buffer_position].UID1=smallest.UID1;
-		merger->output_buffer [merger->current_output_buffer_position].UID2=smallest.UID2;
-		
-		merger->current_output_buffer_position++;
-
+			merger->output_buffer [merger->current_output_buffer_position].UID1=smallest.UID1;
+			merger->output_buffer [merger->current_output_buffer_position].UID2=smallest.UID2;
+			merger->current_output_buffer_position++;	
+	
+		printf("current output buffer position: %d, buffer capacity: %d\n", merger->current_output_buffer_position, merger->output_buffer_capacity);
         //staying on the last slot of the output buffer - next will cause overflow
 		if(merger->current_output_buffer_position == merger-> output_buffer_capacity ) {
+			printf("BUFFER IS FULL\n");
 			if(flush_output_buffer(merger)!=SUCCESS) {
 				return FAILURE;			
-				merger->current_output_buffer_position=0;
 			}	
 		}
 	
@@ -44,6 +44,7 @@ int merge_runs (MergeManager * merger){
 	
 	//flush what remains in output buffer
 	if(merger->current_output_buffer_position > 0) {
+		printf("finished, empty buffer\n");
 		if(flush_output_buffer(merger)!=SUCCESS)
 			return FAILURE;
 	}
@@ -54,6 +55,7 @@ int merge_runs (MergeManager * merger){
 
 
 int get_top_heap_element (MergeManager * merger, HeapElement * result){
+	printf("*************GET TOP HEAP ELEMENT *************\n");
 	HeapElement item;
 	int child, parent;
 
@@ -88,7 +90,7 @@ int get_top_heap_element (MergeManager * merger, HeapElement * result){
 }
 
 int insert_into_heap (MergeManager * merger, int run_id, Record *input){
-
+	printf("*************INSERT INTO HEAP *************\n");
 	HeapElement new_heap_element;
 	int child, parent;
 	new_heap_element.UID1 = input->UID1;
@@ -121,7 +123,7 @@ int insert_into_heap (MergeManager * merger, int run_id, Record *input){
 */
 
 int init_merge (MergeManager * manager) { 
-
+	printf("*************IN INIT *************\n");
 	int sublist_num = manager->num_input_buffers;
 	int block_size = manager->block_size;
 	int total_mem = manager->total_mem;
@@ -133,6 +135,10 @@ int init_merge (MergeManager * manager) {
 	Record *output_buffer = (Record *) calloc(block_size/sizeof(Record), sizeof(Record));	
 	manager->output_buffer = output_buffer;
 	manager->output_buffer_capacity = block_size/sizeof(Record);
+	
+	manager->total_input_buffer_elements = (int *) malloc(sizeof(int) * sublist_num);
+	manager->current_input_file_positions = (int *) malloc(sizeof(int) * sublist_num);
+	manager->current_input_buffer_positions =  (int *)  malloc(sizeof(int) * sublist_num);
 	printf("output buf assigned\n");	
 	
 	blocks_per_mem = blocks_per_mem - 1;
@@ -166,7 +172,7 @@ int init_merge (MergeManager * manager) {
     		printf("Error: could not open file for read.\n");
     		return FAILURE;
   		};
-  	
+  		printf("fopen done\n");
   		// TODO: manager->current_input_file_positions[i] = 
   		num_elements_read = fread(manager->input_buffers[i], sizeof(Record), (blocks_per_input_buf * block_size)/sizeof(Record), fp_read);
   		manager->total_input_buffer_elements[i] = num_elements_read;
@@ -175,23 +181,28 @@ int init_merge (MergeManager * manager) {
   		fclose(fp_read);
 		printf("read\n");		
 	};	
-
+   printf("done setting input buffers\n");
  	// initializes heap taking 1 top element from each buffer 
  	manager->heap = (HeapElement *) malloc(sizeof(HeapElement) * sublist_num);
- 	manager->current_heap_size = -1;
  	manager->heap_capacity = sublist_num;
-
+   printf("done heap stuff\n");
  	for (i=0; i < sublist_num; i++) {
  		current_input_buffer_pos = manager->current_input_buffer_positions[i];
  		insert_into_heap(manager, i, (&manager->input_buffers[i][current_input_buffer_pos]));
  		manager->current_input_buffer_positions[i]++; // increment buffer position for this input buffer
  	}
-	
+	manager->current_heap_size = sublist_num;
 	return SUCCESS;
 }
 
 int flush_output_buffer (MergeManager * manager) {
-	if (fwrite(manager->output_buffer, sizeof(Record), manager->output_buffer_capacity, manager->outputFP) != manager->output_buffer_capacity) {
+	//int num_records_to_write;
+	printf("*************IN FLUSH OUTPUT BUFFER************* current out buffer position: %d\n", manager->current_output_buffer_position);
+		for (int i = 0; i < manager->current_output_buffer_position; i++) {
+				printf("uid1: %d, added uid2: %d\n", (manager->output_buffer[i]).UID1, (manager->output_buffer[i]).UID2);		
+		}
+
+	if (fwrite(manager->output_buffer, sizeof(Record), manager->current_output_buffer_position, manager->outputFP) != (manager->current_output_buffer_position)) {
 		printf("ERROR: output buffer could not be written to disk");
 		return FAILURE;
 	}
@@ -201,6 +212,7 @@ int flush_output_buffer (MergeManager * manager) {
 }
 
 int get_next_input_element(MergeManager * manager, int file_number, Record *result) {
+	printf("**************  GET NEXT INPUT ELEMENT *************\n");
 	int num_elements_read;
 	char str[1024];
 	int current_buffer_pos;
@@ -249,19 +261,23 @@ int refill_buffer (MergeManager * manager, int file_number) {
 }
 
 void clean_up (MergeManager * manager) {
-	fclose(manager->outputFP);
-	free(manager->heap);
-	free(manager->inputFP);
-	free(manager->input_file_numbers);
-	free(manager->output_buffer);
-	for (int i = 0; i < manager->input_buffer_capacity; i++) {
-		free(manager->input_buffers[i]);
+	printf("*************IN FREE *************\n");
+	//free(manager->heap);
+	//fclose(manager->inputFP);
+	//free(manager->output_buffer);
+	printf("about to do input buffers\n");
+	for (int i = 0; i < (manager->num_input_buffers); i++) {
+		//free(manager->input_buffers[i]);
 	}
+	printf("freeing input buffers\n");
 	free(manager->input_buffers);
+	printf("freeing input file positions\n");
 	free(manager->current_input_file_positions);
+	printf("freeing current input\n");
 	free(manager->current_input_buffer_positions);
 	free(manager->total_input_buffer_elements);
 	free(manager);
+	
 }
 // if a bigger than b, return greater than 0
 int compare_heap_elements (HeapElement *a, HeapElement *b) {

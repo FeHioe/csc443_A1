@@ -2,7 +2,10 @@
 #include "merge.h"
 
 int main (int argc, char **argv) {
-
+   if (argc != 4) {
+		printf("Program use: filename, total memory, blocksize\n");
+		return -1;   
+   }
 	//process and validate command-line arguments
 	char *filename = argv[1];
 	int total_mem = atoi(argv[2]);
@@ -19,6 +22,6 @@ int main (int argc, char **argv) {
 	manager->total_mem = total_mem;
 
  	int result = merge_runs(manager);
- 	printf("%d", result);
+ 	printf("finished returned %d", result);
 	return 0;
 }
