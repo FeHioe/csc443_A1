@@ -23,7 +23,7 @@ void sort_array_by_uid2(Record * buffer, int total_records) {
 	qsort(buffer, total_records, sizeof(Record), compare);
    int i;
 	for (i =0; i < total_records; i++){
-		printf("Sorted element %d: uid2 %d\n", i, buffer[i].UID2);
+		//printf("Sorted element %d: uid2 %d\n", i, buffer[i].UID2);
 	};
 };
 
@@ -89,7 +89,7 @@ int phase1(char *filename, int total_mem, int block_size){
   // Determine chunk size
   int chunk_size = ceil((float)filesize / k);
  
- printf("chunk size: %d\n", chunk_size);
+ //printf("chunk size: %d\n", chunk_size);
   int i;
   char str[1024];
   for (i=0 ; i < k; i ++){
@@ -103,7 +103,7 @@ int phase1(char *filename, int total_mem, int block_size){
     int buffer_i = 0;
 
     //printf("record size: %d\n", sizeof(Record));
-    printf("chunk: %d block: %d test:%d block e: %d\n", chunk_size, block_size, test, block_elements);
+    //printf("chunk: %d block: %d test:%d block e: %d\n", chunk_size, block_size, test, block_elements);
 
     while (num_block < test){
       //printf("num_block: %d\n", num_block);      
@@ -115,10 +115,10 @@ int phase1(char *filename, int total_mem, int block_size){
       
       int y;
       for (y=0; y < 9; y++){
-        printf ("block_buffer element: %d\n", block_buffer[y].UID2);
+        //printf ("block_buffer element: %d\n", block_buffer[y].UID2);
       };
       
-      printf("block e: %d\n", block_elements);
+      //printf("block e: %d\n", block_elements);
 
       int j;
       for (j=0; j < block_elements; j++) {
@@ -130,7 +130,7 @@ int phase1(char *filename, int total_mem, int block_size){
 
       
       for (y=0; y < 9; y++){
-        printf ("buffer element: %d\n", buffer[y].UID2);
+        //printf ("buffer element: %d\n", buffer[y].UID2);
       };
       
 
@@ -145,10 +145,10 @@ int phase1(char *filename, int total_mem, int block_size){
         
         int y;
         for (y=0; y < 9; y++){
-          printf ("block_buffer element: %d\n", block_buffer[y].UID2);
+          //printf ("block_buffer element: %d\n", block_buffer[y].UID2);
         };
 
-        printf("block e: %d\n", block_elements);
+        //printf("block e: %d\n", block_elements);
         
 
         int j;
@@ -161,7 +161,7 @@ int phase1(char *filename, int total_mem, int block_size){
 
         
         for (y=0; y < 9; y++){
-          printf ("buffer element: %d\n", buffer[y].UID2);
+          //printf ("buffer element: %d\n", buffer[y].UID2);
         };
         
 
