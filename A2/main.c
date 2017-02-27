@@ -22,6 +22,6 @@ int main (int argc, char **argv) {
 	manager->total_mem = total_mem;
 
  	int result = merge_runs(manager);
- 	printf("finished returned %d", result);
+ 	printf("finished returned %d\n", result);
 	return 0;
 }

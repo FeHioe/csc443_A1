@@ -262,18 +262,13 @@ int refill_buffer (MergeManager * manager, int file_number) {
 
 void clean_up (MergeManager * manager) {
 	printf("*************IN FREE *************\n");
-	//free(manager->heap);
-	//fclose(manager->inputFP);
-	//free(manager->output_buffer);
-	printf("about to do input buffers\n");
+	fclose(manager->outputFP);
+	free(manager->heap);
+	free(manager->output_buffer);
 	for (int i = 0; i < (manager->num_input_buffers); i++) {
-		//free(manager->input_buffers[i]);
+		free(manager->input_buffers[i]);
 	}
-	printf("freeing input buffers\n");
-	free(manager->input_buffers);
-	printf("freeing input file positions\n");
 	free(manager->current_input_file_positions);
-	printf("freeing current input\n");
 	free(manager->current_input_buffer_positions);
 	free(manager->total_input_buffer_elements);
 	free(manager);
