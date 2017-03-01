@@ -57,7 +57,7 @@ void distribution(char * filename, int block_size, int column_id, int max_degree
 		}
 	}
 
-	for (i = 1; i < max_degree; i++) {
+	for (i = 1; i <= max_degree; i++) {
 		if (column_id == 1) {
 			printf("out degree of %d has count %ld\n", i, degree_count[i]);
 		} else {
