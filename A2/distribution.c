@@ -30,7 +30,7 @@ void distribution(char * filename, int block_size, int column_id, int max_degree
 					count++;
 				} else {
 					degree_count[count]++;
-					count = 0;
+					count = 1;
 					id = buffer[i].UID1;
 				}				
 				i += 1;			
@@ -49,7 +49,7 @@ void distribution(char * filename, int block_size, int column_id, int max_degree
 					count++;
 				} else {
 					degree_count[count]++;
-					count = 0;
+					count = 1;
 					id = buffer[i].UID2;
 				}				
 				i += 1;			
