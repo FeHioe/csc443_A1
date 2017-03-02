@@ -6,6 +6,8 @@ void distribution(char * filename, int block_size, int column_id, int max_degree
 	FILE *fp_read;
 	// allocate array 
 	unsigned long long degree_count[max_degree + 1];
+
+	memset(degree_count, 0 , max_degree + 1);
 	
 	Record * buffer = (Record *) calloc (records_per_block, sizeof(Record));
 	if (!(fp_read = fopen(filename, "rb"))) {
@@ -22,7 +24,7 @@ void distribution(char * filename, int block_size, int column_id, int max_degree
 		while((result = fread (buffer, sizeof(Record), records_per_block, fp_read)) > 0){
 			i = 0;
 			while(i < result){
-				if (flag) {
+				if (flag == 1) {
 					id = buffer[i].UID1;
 					flag = 0;
 				}
@@ -30,8 +32,8 @@ void distribution(char * filename, int block_size, int column_id, int max_degree
 					count++;
 				} else {
 					degree_count[count]++;
-					count = 1;
 					id = buffer[i].UID1;
+					count = 1;
 				}				
 				i += 1;			
 			};
@@ -41,7 +43,7 @@ void distribution(char * filename, int block_size, int column_id, int max_degree
 		while((result = fread (buffer, sizeof(Record), records_per_block, fp_read)) > 0){
 			i = 0;
 			while(i < result){
-				if (flag) {
+				if (flag == 1) {
 					id = buffer[i].UID2;
 					flag = 0;
 				}
@@ -78,20 +80,6 @@ void distribution(char * filename, int block_size, int column_id, int max_degree
 	free(buffer);
    fclose(fp_read);
 	//return degree_count;
-}
-
-int main(int argc, char *argv[]){
-	char *filename = argv[1];
-	int block_size = atoi(argv[2]);
-	int column_id = atoi(argv[3]);
-	int max_degree;
-	if (column_id == 1) {
-		max_degree = compute_max_out_degree(filename, block_size);
-	} else {
-		max_degree = compute_max_in_degree(filename, block_size);
-	}
-	distribution(filename, block_size, column_id, max_degree);
-	return 0;
 }
 
 int compute_max_in_degree(char *filename, int block_size) {
@@ -202,5 +190,21 @@ int compute_max_out_degree(char *filename, int block_size) {
 	free(buffer);
 	return max_followers;
 }
+
+int main(int argc, char *argv[]){
+	char *filename = argv[1];
+	int block_size = atoi(argv[2]);
+	int column_id = atoi(argv[3]);
+	int max_degree;
+	if (column_id == 1) {
+		max_degree = compute_max_out_degree(filename, block_size);
+	} else {
+		max_degree = compute_max_in_degree(filename, block_size);
+	}
+	distribution(filename, block_size, column_id, max_degree);
+	return 0;
+}
+
+
 
 
