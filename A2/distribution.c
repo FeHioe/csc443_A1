@@ -57,30 +57,24 @@ void distribution(char * filename, int block_size, int column_id, int max_degree
 		}
 	}
 	
-	
-	char * commandsForGnuplot[] = {"set title \"TITLEEEEE\"", "plot 'data.temp'"};
-
-    FILE * temp = fopen("data.temp", "w");
-    /*Opens an interface that one can use to send commands as if they were typing into the
-     *     gnuplot command line.  "The -persistent" keeps the plot open even after your
-     *     C program terminates.
-     */
-    FILE * gnuplotPipe = popen ("gnuplot -persistent", "w");
-
+		FILE * fp;
+	if (column_id == 1) {
+		fp = fopen("outdegree.csv", "w+");
+	} else {
+		fp = fopen("indegree.csv", "w+");
+	}
+	fprintf(fp,"degree, count\n");
 	for (i = 1; i <= max_degree; i++) {
 		if (column_id == 1) {
 			printf("out degree of %d has count %ld\n", i, degree_count[i]);
 		} else {
 			printf("in degree of %d has count %ld\n", i, degree_count[i]);
 		}
-		fprintf(temp, "%d %ld \n", i, degree_count[i]); //Write the data to a temporary file
+		fprintf(fp, "%d,%ld\n", i, degree_count[i]); //Write the data to a temporary file
 		
 	}
 
-    for (i=0; i < 2; i++) {
-    	fprintf(gnuplotPipe, "%s \n", commandsForGnuplot[i]); //Send commands to gnuplot one by one.
-    }
-	fflush(gnuplotPipe);
+   fclose(fp);
 	free(buffer);
    fclose(fp_read);
 	//return degree_count;
