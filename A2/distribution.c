@@ -5,7 +5,7 @@ void distribution(char * filename, int block_size, int column_id, int max_degree
 	int records_per_block = block_size/sizeof(Record);
 	FILE *fp_read;
 	// allocate array 
-	long degree_count[max_degree + 1];
+	unsigned long long degree_count[max_degree + 1];
 	
 	Record * buffer = (Record *) calloc (records_per_block, sizeof(Record));
 	if (!(fp_read = fopen(filename, "rb"))) {
@@ -66,11 +66,11 @@ void distribution(char * filename, int block_size, int column_id, int max_degree
 	fprintf(fp,"degree, count\n");
 	for (i = 1; i <= max_degree; i++) {
 		if (column_id == 1) {
-			printf("out degree of %d has count %ld\n", i, degree_count[i]);
+			printf("out degree of %d has count %llu\n", i, degree_count[i]);
 		} else {
-			printf("in degree of %d has count %ld\n", i, degree_count[i]);
+			printf("in degree of %d has count %llu\n", i, degree_count[i]);
 		}
-		fprintf(fp, "%d,%ld\n", i, degree_count[i]); //Write the data to a temporary file
+		fprintf(fp, "%d,%llu\n", i, degree_count[i]); //Write the data to a temporary file
 		
 	}
 
