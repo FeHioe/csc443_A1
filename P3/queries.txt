@@ -17,3 +17,6 @@ order by indegree - outdegree DESC
 LIMIT 10);
 
 
+Results of first query:
+Run Time: real 423.320 user 324.396000 sys 88.640000
+Count: 
