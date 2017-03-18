@@ -46,6 +46,7 @@ typedef struct merge_manager {
 	int num_input_buffers;
 	int block_size;
 	int total_mem;
+	int sortby;
 }MergeManager;
 
 //1. main loop

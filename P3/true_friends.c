@@ -1,16 +1,16 @@
 #include "merge.h"
-
+#include "sortfile.c"
 
 // comparison function that returns true 
 // if uid1 is smaller than uid2
 int uid1ltuid2(Record * record) {
-	return record->UID1 < record->UID2;
+	return (record->UID1 < record->UID2);
 }
 
 // comparison function that returns true
 // if uid2 is smaller than uid1
 int uid2ltuid1(Record * record) {
-	return record->UID2 < record->UID1;
+	return (record->UID2 < record->UID1);
 }
 
 // comparison function that returns true if 
@@ -167,137 +167,6 @@ int iterate(char * writeto, char *filename, int total_mem, int block_size, int (
 // R1 x R2
 // filename represents R1
 // fileame2 represents R2
-int cross_product(char * writeto, char *filename, char *filename2, int total_mem, int block_size, int (*compar)(Record * , Record *)) {
-
-  FILE *fp_read;
-  FILE *fp_read2;
-  FILE * fp_write;
-
-  int filesize;
-  int result;  
-  Record * writebuffer;
-  
-  if (block_size > total_mem){
-	 printf("Error: Block size must be smaller than total memory.\n");
-    exit(1);
-  };  
-  
-  if (!(fp_read = fopen(filename, "rb"))) {
-    printf("Error: could not open file for read.\n");
-    exit(1);
-  }
-
-  if (!(fp_write = fopen(writeto, "wb"))){
-      printf("Error: could not open file for write.");
-      exit(1);
-    }
-  
-  // get file size
-  fseek(fp_read, 0L, SEEK_END);
-  filesize = ftell(fp_read);
-  rewind(fp_read);
-
-  // Check if total memory is sufficient 
-  int total_block_num = total_mem/block_size; // M
-  int B = filesize/block_size;
-
-  // Partition into K chunks of maximum possible size
-  int k = ceil((float)filesize / total_mem);
-  printf("filesize: %d total_mem: %d k: %d\n", filesize, total_mem, k);
-
-  // Determine chunk size
-  int chunk_size = ceil((float)filesize / k);
- 
- //printf("chunk size: %d\n", chunk_size);
-  int i;
-  for (i=0 ; i < k; i ++){
-    // Align chunk with block size 
-    Record *buffer = (Record*) calloc (chunk_size, sizeof(Record));
-    Record *block_buffer = (Record*) calloc (block_size, sizeof(Record));
-
-    int num_block = 0;
-    int block_elements = block_size / sizeof(Record);
-    int test = ceil(((float)chunk_size/block_size));
-    int buffer_i = 0;
-
-    //printf("record size: %d\n", sizeof(Record));
-    //printf("chunk: %d block: %d test:%d block e: %d\n", chunk_size, block_size, test, block_elements);
-
-    while (num_block < test){
-      //printf("num_block: %d\n", num_block);      
-      
-      if ((result = fread(block_buffer, sizeof(Record), block_elements, fp_read)) < 0){
-      	printf("Read Error\n");
-      };
-
-      
-      int y;
-      for (y=0; y < 9; y++){
-        //printf ("block_buffer element: %d\n", block_buffer[y].UID2);
-      };
-      
-      //printf("block e: %d\n", block_elements);
-
-      int j;
-      for (j=0; j < block_elements; j++) {
-
-        buffer[buffer_i].UID1 = block_buffer[j].UID1;
-        buffer[buffer_i].UID2 = block_buffer[j].UID2;
-        buffer_i++;
-      };
-
-      
-      for (y=0; y < 9; y++){
-        //printf ("buffer element: %d\n", buffer[y].UID2);
-      };
-      
-
-      if ((num_block+1 == test) && (chunk_size % block_size != 0)){
-        block_elements = (chunk_size % block_size) / sizeof(Record);
-
-        if ((result = fread(block_buffer, sizeof(Record), block_elements, fp_read)) < 0){
-      	printf("Read Error\n");
-        };
-
-
-        
-        int y;
-        for (y=0; y < 9; y++){
-          //printf ("block_buffer element: %d\n", block_buffer[y].UID2);
-        };
-
-        //printf("block e: %d\n", block_elements);
-        
-
-        int j;
-        for (j=0; j < block_elements; j++) {
-
-          buffer[buffer_i].UID1 = block_buffer[j].UID1;
-          buffer[buffer_i].UID2 = block_buffer[j].UID2;
-          buffer_i++;
-        };
-
-        for (y=0; y < 9; y++){
-          //printf ("buffer element: %d\n", buffer[y].UID2);
-        };   
-
-      };
-      num_block++;
-
-    };
-
-    writebuffer = filtertuples(buffer, ceil((float)chunk_size/sizeof(Record)), compar);
-
-    fwrite(writebuffer, sizeof(Record), ceil((float)chunk_size/sizeof(Record)), fp_write);
-    
-    free(block_buffer);
-    free(buffer);
-    free(writebuffer);
-  };
-  fclose(fp_write);
-  fclose(fp_read);
-  
-  return k;
 
 
 }
@@ -327,14 +196,18 @@ int main (int argc, char **argv) {
     // first get t1.uid1 < t1.uid2 
 
     // TODO: POSSIBLE TO DO THIS ONCE IN ITERATE (can be updated to improve performance)
-    if (iterate("uid1ltuid2.dat", filename, total_mem, block_size, uid1ltuid2) <= 0) {
+    // TABLE 1: t1.uid1 < t1.uid2
+    if (iterate("table1.dat", filename, total_mem, block_size, uid1ltuid2) <= 0) {
     	printf("Error\n");
     }
-    if (iterate("uid2ltuid1.dat", filename, total_mem, block_size, uid2ltuid1) <= 0) {
+    // TABLE 2: t2.uid2 < t2.uid1
+    if (iterate("table2.dat", filename, total_mem, block_size, uid2ltuid1) <= 0) {
     	printf("Error\n");
     }
 
     // to optimize: sort by uid1 in relation 1, then sort by uid2 in relation 2
+     sort_file("table1.dat", "sortedbyuid1table1.dat", total_mem, block_size, 1);
+     sort_file("table2.dat", "sortedbyuid2table2.dat", total_mem, block_size, 1);
     // then do join
     // then select
 
