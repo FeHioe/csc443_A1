@@ -44,7 +44,7 @@ int get_degrees(char* file_name, int mem_size, int block_size, int id){
     Record *input_buffer = (Record*) calloc (chunk_size, sizeof(Record));
     Degree *count_buffer = (Degree*) calloc (block_size/sizeof(Degree), sizeof(Degree));
     int count_i = 0;
-    int current_uid1 = -1;
+    int current_uid = -1;
     int count = 0;
 
     int i;
@@ -55,7 +55,6 @@ int get_degrees(char* file_name, int mem_size, int block_size, int id){
       int num_block = 0;
       int block_elements = block_size / sizeof(Record);
       int test = ceil(((float)chunk_size / block_size));
-      printf("test size: %d\n", test);
       int buffer_i = 0;
 
       while (num_block < test){
@@ -91,48 +90,86 @@ int get_degrees(char* file_name, int mem_size, int block_size, int id){
 
       int y;
       for (y=0; y < test; y++){
-      	if (current_uid1 == -1){
-      		// Initialize
-      		current_uid1 = input_buffer[0].UID1;
-      		count++;
+      	if (id == 1) { // outdegree
+	      	if (current_uid == -1){
+	      		// Initialize
+	      		current_uid = input_buffer[0].UID1;
+	      		count++;
 
-      		printf("init\n");
-      		printf ("uid1: %d count: %d\n", current_uid1, count);
+	      		// printf("init\n");
+	      		// printf ("uid1: %d count: %d\n", current_uid, count);
 
-      	} else if (current_uid1 == input_buffer[y].UID1) {
-      		count++;
-      		printf("add\n");
-      		printf ("uid1: %d count: %d\n", current_uid1, count);
-      	} else {
-      		// Uid1 changed
-      		count_buffer[count_i].UID = current_uid1;
-      		count_buffer[count_i].count = count;
+	      	} else if (current_uid == input_buffer[y].UID1) {
+	      		count++;
+	      		// printf("add\n");
+	      		// printf ("uid1: %d count: %d\n", current_uid, count);
+	      	} else {
+	      		// Uid1 changed
+	      		count_buffer[count_i].UID = current_uid;
+	      		count_buffer[count_i].count = count;
 
-      		printf ("buffer uid1: %d count: %d\n", count_buffer[count_i].UID, count_buffer[count_i].count);
+	      		// printf ("buffer uid1: %d count: %d\n", count_buffer[count_i].UID, count_buffer[count_i].count);
 
-			count_i++;
-			printf("switch\n");
-			printf ("uid1: %d count: %d\n", current_uid1, count);
+				count_i++;
+				// printf("switch\n");
+				// printf ("uid1: %d count: %d\n", current_uid, count);
 
 
-			if (block_size/sizeof(Degree) <= count_i){
-				printf("switch\n");
-				fwrite (count_buffer, sizeof(Degree), count_i, fp_write);
-				count_i = 0;
-			}
+				if (block_size/sizeof(Degree) <= count_i){
+					// printf("switch\n");
+					fwrite (count_buffer, sizeof(Degree), count_i, fp_write);
+					count_i = 0;
+				}
 
-			current_uid1 = input_buffer[y].UID1;
-			count = 1;
-      	}
-      };
+				current_uid = input_buffer[y].UID1;
+				count = 1;
+	      	}
+	    } else { // indegree
 
-      printf(" ------------------------------\n");
-    };
 
-    count_buffer[count_i].UID = current_uid1;
+	      	if (current_uid == -1){
+	      		// Initialize
+	      		current_uid = input_buffer[0].UID2;
+	      		count++;
+
+	      		// printf("init\n");
+	      		// printf ("uid2: %d count: %d\n", current_uid, count);
+
+	      	} else if (current_uid == input_buffer[y].UID2) {
+	      		count++;
+	      		// printf("add\n");
+	      		// printf ("uid2: %d count: %d\n", current_uid, count);
+	      	} else {
+	      		// Uid1 changed
+	      		count_buffer[count_i].UID = current_uid;
+	      		count_buffer[count_i].count = count;
+
+	      		// printf ("buffer uid2: %d count: %d\n", count_buffer[count_i].UID, count_buffer[count_i].count);
+
+				count_i++;
+				// printf("switch\n");
+				// printf ("uid2: %d count: %d\n", current_uid, count);
+
+
+				if (block_size/sizeof(Degree) <= count_i){
+					// printf("write\n");
+					fwrite (count_buffer, sizeof(Degree), count_i, fp_write);
+					count_i = 0;
+				}
+
+				current_uid = input_buffer[y].UID2;
+				count = 1;
+	      	}
+
+	    }
+	  }
+      // printf(" ------------------------------\n");
+    }
+
+    count_buffer[count_i].UID = current_uid;
     count_buffer[count_i].count = count;
-    printf("end\n");
-    printf ("buffer uid1: %d count: %d\n", count_buffer[count_i].UID, count_buffer[count_i].count);
+    // printf("end\n");
+    // printf ("buffer uid1: %d count: %d\n", count_buffer[count_i].UID, count_buffer[count_i].count);
     count_i++;
     fwrite (count_buffer, sizeof(Degree), count_i, fp_write);
 
@@ -155,11 +192,11 @@ int main(int argc, char **argv){
 	
 	// Sort input file by uid1 and uid2 and store in output1.dat and output.dat respectively
     sort_file (filename, mem_size, block_size, 1);
-    //sort_file (filename, mem_size, block_size, 2);
+    sort_file (filename, mem_size, block_size, 2);
 
     // Get indegree and outdegree and store in indegree.dat and outdegree.dat 
     get_degrees("output1.dat", mem_size, block_size, 1); // outdegree
-    //get_degrees("output.dat", mem_size, block_size, 2); // indegree
+    get_degrees("output.dat", mem_size, block_size, 2); // indegree
 
     // End timing statements
     ftime(&t_end);
