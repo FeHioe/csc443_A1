@@ -74,6 +74,6 @@ int refill_buffer (MergeManager * manager, int file_number);
 void clean_up (MergeManager * merger);
 
 //9. Application-specific comparison function
-int compare_heap_elements (HeapElement *a, HeapElement *b);
+int compare_heap_elements (HeapElement *a, HeapElement *b, MergeManager * merger);
 
 #endif

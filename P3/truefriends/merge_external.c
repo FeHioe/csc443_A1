@@ -75,7 +75,7 @@ int get_top_heap_element (MergeManager * merger, HeapElement * result){
 			++child;
 		
 		// compare item with the larger 
-		if (compare_heap_elements(&item, &(merger->heap[child], merger))>0) {
+		if (compare_heap_elements(&item, &(merger->heap[child]), merger)>0) {
 			merger->heap[parent] = merger->heap[child];
 			parent = child;
 		} 
@@ -273,7 +273,7 @@ void clean_up (MergeManager * manager) {
 	free(manager);
 }
 // if a bigger than b, return greater than 0
-int compare_heap_elements (HeapElement *a, HeapElement *b, MergeManeger * merger) {
+int compare_heap_elements (HeapElement *a, HeapElement *b, MergeManager * merger) {
 	if (merger->sortby == 1) {
 		return (a->UID1 - b->UID1);
 	} else if (merger->sortby == 2) {

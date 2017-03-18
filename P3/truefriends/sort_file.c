@@ -6,10 +6,6 @@
 // sortby is the uid to sort by either 1 or 0
 // writeto is the filename to write the sorted file to 
 int sort_file(char * filename, char * writeto, int total_mem, int block_size, int sortby) {
-   if (argc != 4) {
-		printf("Program use: filename, total memory, blocksize\n");
-		return -1;   
-   }
 	
 	MergeManager * manager = (MergeManager *) malloc(sizeof(MergeManager));
 	

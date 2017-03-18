@@ -15,8 +15,8 @@ DISK_SORT_OBJ = disk_sort.o merge_external.o true_friends.o
 true_friends: $(DISK_SORT_OBJ) 
 	$(CC) $(CFLAGS) $^ -o $@ -lm -std=c99
 %.o: %.c $(HEADERS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+	$(CC) -c -o $@ $< $(CFLAGS) -std=c99
 
 clean:  
-	rm disk_sort distribution
+	rm true_friends *.o
 
