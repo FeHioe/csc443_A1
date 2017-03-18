@@ -1,0 +1,24 @@
+// list true friends
+SELECT t1.uid1, t1.uid2 FROM followers t1, followers t2 where t1.uid1 < t1.uid2 and t1.uid1 = t2.uid2 AND t2.uid1 = t1.uid2;
+
+// true friend count
+SELECT count(t1.uid1) FROM followers t1, followers t2 where t1.uid1 < t1.uid2 and t1.uid1 = t2.uid2 and t2.uid1 = t1.uid2;
+
+// celebrities
+select user from (
+select t.user as user, 
+(select count(*) from followers where uid2 = t.user) as indegree,
+(select count(*) from followers where uid1 = t.user) as outdegree 
+from (select uid2 as user from followers
+        UNION
+	select uid1 as user from followers) t
+group by t.user
+order by indegree - outdegree DESC
+LIMIT 10);
+
+
+Results of first query:
+Run Time: real 423.320 user 324.396000 sys 88.640000
+Count: Run Time: real 395.200 user 303.048000 sys 55.028000
+
+Results of second query:
