@@ -146,9 +146,9 @@ int init_merge (MergeManager * manager) {
 		printf("Error: must have one block per input buffer.");
 		return FAILURE;
 	}
-	strcpy(manager->output_file_name, "output.dat");
+	//strcpy(manager->output_file_name, "output.dat");
 	if (!(manager->outputFP = fopen(manager->output_file_name, "wb"))){
-      printf("Error: could not open file for write.");
+      printf("Error: could not open file for write. Line 151 merge external");
       return FAILURE;
 	}
 	manager->input_buffer_capacity = (blocks_per_input_buf * block_size)/sizeof(Record);
@@ -167,7 +167,7 @@ int init_merge (MergeManager * manager) {
 		
 		sprintf(str, "sublist%d.dat", i);
 		if (!(fp_read = fopen(str, "rb"))) {
-    		printf("Error: could not open file for read.\n");
+    		printf("Error: could not open file for read. Line 170 merge external\n");
     		return FAILURE;
   		};
   		printf("fopen done\n");

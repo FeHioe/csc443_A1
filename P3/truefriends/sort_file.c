@@ -9,7 +9,7 @@ int sort_file(char * filename, char * writeto, int total_mem, int block_size, in
 	
 	MergeManager * manager = (MergeManager *) malloc(sizeof(MergeManager));
 	
-	int sublist_num = phase1(filename, total_mem, block_size);
+	int sublist_num = phase1(filename, total_mem, block_size, sortby);
 
 	printf("number of sublist: %d\n", sublist_num);
 	strcpy(manager->output_file_name, writeto);

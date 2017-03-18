@@ -22,6 +22,7 @@ int uid2ltuid1(Record * record) {
 int true_friend(Record * record, Record * record2) {
 	return ((record->UID1 == record2->UID2) && (record2->UID1 == record->UID2));
 }
+/*
 // function that filters records in the buffer according to the compar
 // function
 Record * filtertuples(Record * buffer, int total_records, int (*compar)(Record * )) {
@@ -31,20 +32,22 @@ Record * filtertuples(Record * buffer, int total_records, int (*compar)(Record *
 	for (i =0; i < total_records; i++){
 		if (compar(&buffer[i])) {
 			lt[lti] = buffer[i];
+			printf("added tuple: uid1: %d, uid2: %d\n", lt[lti].UID1, lt[lti].UID2);
 			lti++;
 		}
 	}
 	return lt;
 }
-
+*/
 int iterate(char * writeto, char *filename, int total_mem, int block_size, int (*compar)(Record * )) {
   
   FILE *fp_read;
   FILE * fp_write;
   int filesize;
   int result;  
-  Record * writebuffer;
-  
+  //Record * writebuffer;
+  int lti;
+  int total_records;
   if (block_size > total_mem){
 	 printf("Error: Block size must be smaller than total memory.\n");
     exit(1);
@@ -153,14 +156,23 @@ int iterate(char * writeto, char *filename, int total_mem, int block_size, int (
       num_block++;
 
     };
-
-    writebuffer = filtertuples(buffer, ceil((float)chunk_size/sizeof(Record)), compar);
-
-    fwrite(writebuffer, sizeof(Record), ceil((float)chunk_size/sizeof(Record)), fp_write);
+    
+    //writebuffer = filtertuples(buffer, ceil((float)chunk_size/sizeof(Record)), compar);
+    total_records = ceil((float)chunk_size/sizeof(Record));
+	 Record * lt = (Record *) malloc(total_records*sizeof(Record));
+	 lti = 0;
+	 for (int i =0; i < total_records; i++){
+	 	if (compar(&buffer[i])) {
+			lt[lti] = buffer[i];
+			if (lt[lti].UID1 == 0 || lt[lti].UID2 == 0) { printf("added tuple: uid1: %d, uid2: %d\n", lt[lti].UID1, lt[lti].UID2);}
+			lti++;
+		}
+	}
+    fwrite(lt, sizeof(Record), lti, fp_write);
     
     free(block_buffer);
     free(buffer);
-    free(writebuffer);
+    free(lt);
   };
   fclose(fp_write);
   fclose(fp_read);
@@ -381,9 +393,9 @@ int main(int argc, char **argv) {
     }
 
     // to optimize: sort by uid1 in relation 1, then sort by uid2 in relation 2
-     sort_file("table1.dat", "sortedbyuid1table1.dat", total_mem, block_size, 1);
-     sort_file("table2.dat", "sortedbyuid2table2.dat", total_mem, block_size, 1);
+     //sort_file("table1.dat", "sortedbyuid1table1.dat", total_mem, block_size, 1);
+     //sort_file("table2.dat", "sortedbyuid2table2.dat", total_mem, block_size, 2);
 
-    true_friend_query("sortedbyuid1table1.dat", "sortedbyuid2table2.dat", "result.dat", total_mem, block_size);
+    //true_friend_query("sortedbyuid1table1.dat", "sortedbyuid2table2.dat", "result.dat", total_mem, block_size);
 	return 1;
 }

@@ -13,21 +13,33 @@
 * zero: equal records
 */
 
-int compare (const void *a, const void *b) {
+int compare_uid2 (const void *a, const void *b) {
  int a_f = ((const Record *)a)->UID2;
  int b_f = ((const Record *)b)->UID2;
  return (a_f - b_f);
 }
 
-void sort_array_by_uid2(Record * buffer, int total_records) {
-	qsort(buffer, total_records, sizeof(Record), compare);
+int compare_uid1 (const void *a, const void *b) {
+ int a_f = ((const Record *)a)->UID1;
+ int b_f = ((const Record *)b)->UID1;
+ return (a_f - b_f);
+}
+void sort_array_by(Record * buffer, int total_records, int id) {
+	if (id == 1) {
+		qsort(buffer, total_records, sizeof(Record), compare_uid1);
+	} else if (id == 2) {
+		qsort(buffer, total_records, sizeof(Record), compare_uid2);
+	} else {
+		printf("Error, wrong id");
+		exit(1);	
+	} 
    int i;
 	for (i =0; i < total_records; i++){
-		//printf("Sorted element %d: uid2 %d\n", i, buffer[i].UID2);
+		//printf("Sorted element %d: uid2 %d, uid1 %d\n", i, buffer[i].UID2, buffer[i].UID1);
 	};
 };
 
-int phase1(char *filename, int total_mem, int block_size){
+int phase1(char *filename, int total_mem, int block_size, int id){
   
   FILE *fp_read;
   FILE * fp_write;
@@ -41,7 +53,7 @@ int phase1(char *filename, int total_mem, int block_size){
   };  
   
   if (!(fp_read = fopen(filename, "rb"))) {
-    printf("Error: could not open file for read.\n");
+    printf("Error: could not open file for read.Line 44 disk_sort \n");
     exit(1);
   }
   
@@ -150,7 +162,7 @@ int phase1(char *filename, int total_mem, int block_size){
 
     };
 
-    sort_array_by_uid2(buffer, ceil((float)chunk_size/sizeof(Record)));
+    sort_array_by(buffer, ceil((float)chunk_size/sizeof(Record)), id);
     sprintf(str, "sublist%d.dat", i);
 
     if (!(fp_write = fopen(str, "wb"))){
