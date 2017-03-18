@@ -175,7 +175,7 @@ int true_friend(char * table1, char * table2, char * writeto) {
   FILE *fp_readtable2;
   FILE * fp_R;
   FILE * fp_S;
-  FILE * fp_write;
+  //FILE * fp_write;
   int table1_filesize;
   int table2_filesize;
   int R_filesize;
@@ -364,7 +364,7 @@ int main (int argc, char **argv) {
 	  int total_mem = atoi(argv[2]);
 	  int block_size = atoi(argv[3]);
 
-	FILE *fp_read;
+	  FILE *fp_read;
   	FILE * fp_write;
 
 	if (!(fp_read = fopen(filename, "rb"))) {
@@ -372,10 +372,6 @@ int main (int argc, char **argv) {
     exit(1);
   	}
 
-  	if (!(fp_write = fopen("comparison", "wb"))){
-      printf("Error: could not open file for write.\n");
-      exit(1);
-    }
     // first get t1.uid1 < t1.uid2 
 
     // TODO: POSSIBLE TO DO THIS ONCE IN ITERATE (can be updated to improve performance)
