@@ -289,6 +289,7 @@ int true_friend_query(char * table1, char * table2, char * writeto, int total_me
   int last_page = 0;
   int page = 0;
   int first = 1;
+  Record * S_buffer;
   // Record * writebuffer;
   
   if (block_size > total_mem){
@@ -359,7 +360,7 @@ int true_friend_query(char * table1, char * table2, char * writeto, int total_me
     int test = ceil(((float)chunk_size/block_size));
     int buffer_i = 0;
 
-    //printf("i: %d, c_r: %d\n", i, c_r);
+    printf("i: %d, c_r: %d\n", i, c_r);
     //printf("chunk: %d block: %d test:%d block e: %d\n", chunk_size, block_size, test, block_elements);
 
     while (num_block < test){
@@ -421,7 +422,7 @@ int true_friend_query(char * table1, char * table2, char * writeto, int total_me
         };   
 
       };
-      //printf("buffer_i: %d, first element in buffer: %d\n", buffer_i, buffer[0].UID1);
+      printf("buffer_i: %d, first element in buffer: %d\n", buffer_i, buffer[0].UID1);
       num_block++;
 
     };
@@ -430,19 +431,26 @@ int true_friend_query(char * table1, char * table2, char * writeto, int total_me
     page = 0;
    // printf("num pages: %d, page number: %d\n", num_pages, page);
     // for each page of S
-    Record * S_buffer;
-    while (page < num_pages) {
-			Record * S_buffer = (Record * ) malloc(block_size);
-     		if ((result = fread(S_buffer, sizeof(Record), block_size/sizeof(Record), fp_S)) < 0){
+    
+    while (ftell(fp_S) < S_filesize) {
+             printf("in while loop\n");	
+            if (first == 1) {
+		S_buffer = (Record * ) malloc(block_size);     		
+		if ((result = fread(S_buffer, sizeof(Record), block_size/sizeof(Record), fp_S)) < 0){
         			printf("Read Error\n");
         	}
+		printf("first set to 0");
+		first = 0;
+	}
 
-        while (S_buffer[0].UID2 < buffer[0].UID1 && S_buffer[result].UID2 < buffer[0].UID1) {
+
+        while (ftell(fp_S) < S_filesize && S_buffer[result - 1].UID2 < buffer[0].UID1) {
+              printf("s_buffer.uid2: %d, buffer[0].UID1: %d\n", S_buffer[result - 1].UID2, buffer[0].UID1);
             if ((result = fread(S_buffer, sizeof(Record), block_size/sizeof(Record), fp_S)) < 0){
               printf("Read Error\n");
           }
         }
-      //printf("page number for S: %d\n", page);
+     printf("result: %d, file position: %lu, filesize: %lu \n", result, ftell(fp_S), S_filesize);
       // for each tuple in S
      // for (i3 = 0; i3 < block_elements; i3++) {
      	   int s_i = 0;
@@ -456,14 +464,15 @@ int true_friend_query(char * table1, char * table2, char * writeto, int total_me
 					break;              
       			}
           	    if (S_buffer[s_i].UID2 == buffer[j1].UID1 && S_buffer[s_i].UID1 == buffer[j1].UID2)  {
-                  //printf("True friends: %d %d\n", S_buffer[s_i].UID1, S_buffer[s_i].UID2);
+                  printf("True friends: %d %d\n", S_buffer[s_i].UID1, S_buffer[s_i].UID2);
                   // DO SELECT HERE
                   fwrite(&S_buffer[s_i], sizeof(Record), 1, fp_write);
                   count++;
+		  printf("count: %d\n", count);
                   break;
                  
               }
-              //printf("tuple in S: uid1: %d, uid2: %d   tuple in R: uid1: %d, uid2: %d\n", S_buffer[s_i].UID1, S_buffer[s_i].UID2, buffer[j1].UID1, buffer[j1].UID2);
+             // printf("tuple in S: uid1: %d, uid2: %d   tuple in R: uid1: %d, uid2: %d\n", S_buffer[s_i].UID1, S_buffer[s_i].UID2, buffer[j1].UID1, buffer[j1].UID2);
               //printf("index: %d, %d, buffer_i: %d", s_i, j1, buffer_i);
           }
           	if (S_buffer[s_i].UID2 > buffer[buffer_i - 1].UID1) {
@@ -472,16 +481,14 @@ int true_friend_query(char * table1, char * table2, char * writeto, int total_me
       			}
           s_i++;
       }
-      if (S_buffer[s_i].UID2 > buffer[buffer_i].UID1) {
-				      break;
+      if (S_buffer[result - 1].UID2 > buffer[buffer_i].UID1) {
+                         break;
       }
-      page++;
-      free(S_buffer);
     }
-	 free(S_buffer);
+    //free(S_buffer);
     free(block_buffer);
     free(buffer);
-    rewind(fp_S);
+    //rewind(fp_S);
     //free(writebuffer);
   }
   fclose(fp_write);
