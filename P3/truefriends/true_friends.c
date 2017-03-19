@@ -436,6 +436,12 @@ int true_friend_query(char * table1, char * table2, char * writeto, int total_me
      		if ((result = fread(S_buffer, sizeof(Record), block_size/sizeof(Record), fp_S)) < 0){
         			printf("Read Error\n");
         	}
+
+        while (S_buffer[0] < buffer[0] && S_buffer[result] < buffer[0]) {
+            if ((result = fread(S_buffer, sizeof(Record), block_size/sizeof(Record), fp_S)) < 0){
+              printf("Read Error\n");
+          }
+        }
       //printf("page number for S: %d\n", page);
       // for each tuple in S
      // for (i3 = 0; i3 < block_elements; i3++) {
