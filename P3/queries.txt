@@ -21,6 +21,13 @@ LIMIT 10);
 CREATE VIEW outdegree as SELECT uid1 as uid, count(uid2) as count FROM followers GROUP BY uid1;
 CREATE VIEW indegree as SELECT uid2 as uid, count(uid1) as count FROM followers GROUP BY uid2;
 
+SELECT indegree.uid, (indegree.count - outdegree.count) as diff
+   FROM indegree, outdegree
+   WHERE indegree.uid = outdegree.uid 
+   ORDER BY diff DESC
+   LIMIT 10;
+
+
 Results of first query:
 Run Time: real 423.320 user 324.396000 sys 88.640000
 Count: Run Time: real 395.200 user 303.048000 sys 55.028000
