@@ -180,6 +180,95 @@ int iterate(char * writeto, char *filename, int total_mem, int block_size, int (
   return k;
   
 }
+
+
+/*
+int new_join(char * table1, char * table2, char * writeto, int total_mem, int block_size) {
+	
+	int count = 0;
+  FILE *fp_readtable1;
+  FILE *fp_readtable2;
+  FILE * fp_R;
+  FILE * fp_S;
+  FILE * fp_write;
+  int table1_filesize;
+  int table2_filesize;
+  int R_filesize;
+  int S_filesize;
+  int result;  
+  int last_page = 0;
+  int page = 0;
+  // Record * writebuffer;
+  
+  if (block_size > total_mem){
+   printf("Error: Block size must be smaller than total memory.\n");
+    exit(1);
+  };  
+  
+  if (!(fp_readtable1 = fopen(table1, "rb"))) {
+    printf("Error: could not open file for read.\n");
+    exit(1);
+  }
+  if (!(fp_readtable2 = fopen(table2, "rb"))) {
+    printf("Error: could not open file for read.\n");
+    exit(1);
+  }
+
+  if (!(fp_write = fopen(writeto, "wb"))){
+      printf("Error: could not open file for write.");
+      exit(1);
+    }
+  
+  // get file size
+  fseek(fp_readtable1, 0L, SEEK_END);
+  table1_filesize = ftell(fp_readtable1);
+  rewind(fp_readtable1);
+
+  fseek(fp_readtable2, 0L, SEEK_END);
+  table2_filesize = ftell(fp_readtable2);
+  rewind(fp_readtable2);
+
+
+  // Check if total memory is sufficient 
+  int total_block_num = total_mem/block_size; // M
+  
+  int blocks_per_table = ceil((float)total_block_num/2);
+
+  int table1chunks = ceil((float) table1_filesize/blocks_per_table);
+  int table2chunks = ceil((float) table2_filesize/blocks_per_table);
+  
+  int table1chunk_size = table1_filesize/table1chunks;
+  int table2chunk_size = table2_filesize/table2chunks;
+  
+    
+  while (t1_chunks_read < table1chunks) {
+			Record * table1buffer = (Record *)malloc(table1chunk_size/sizeof(Record));
+			
+			
+  			while (t2_chunks_read < table2chunks) {
+  			
+				  			
+  			}
+  }
+	
+  // divide table R into chunks of size M - 1
+  int c_r = ceil((float) R_filesize / (total_block_num - 1));
+  //printf("filesize: %d total_mem: %d k: %d\n", filesize, total_mem, c_r);
+
+  // Determine chunk size
+  int chunk_size = ceil((float) R_filesize / c_r);
+ 
+ //printf("chunk size: %d\n", chunk_size);
+  int i;
+
+
+
+
+
+
+
+}
+*/
 // Join: t1.uid1 = t2.uid2 and t2.uid1 = t1.uid2
 // filename represents R1
 // fileame2 represents R2
@@ -196,7 +285,10 @@ int true_friend_query(char * table1, char * table2, char * writeto, int total_me
   int table2_filesize;
   int R_filesize;
   int S_filesize;
-  int result;  
+  int result = 0;
+  int last_page = 0;
+  int page = 0;
+  int first = 1;
   // Record * writebuffer;
   
   if (block_size > total_mem){
@@ -256,7 +348,7 @@ int true_friend_query(char * table1, char * table2, char * writeto, int total_me
  //printf("chunk size: %d\n", chunk_size);
   int i;
   // for each chunk c_r of R of size M - 1
-  for (i=0 ; i < c_r; i ++){
+  for (i=0 ; i < c_r; i++){
     // Align chunk with block size 
     Record *buffer = (Record*) calloc (chunk_size, sizeof(Record));
     Record *block_buffer = (Record*) calloc (block_size, sizeof(Record));
@@ -267,7 +359,7 @@ int true_friend_query(char * table1, char * table2, char * writeto, int total_me
     int test = ceil(((float)chunk_size/block_size));
     int buffer_i = 0;
 
-    //printf("record size: %d\n", sizeof(Record));
+    //printf("i: %d, c_r: %d\n", i, c_r);
     //printf("chunk: %d block: %d test:%d block e: %d\n", chunk_size, block_size, test, block_elements);
 
     while (num_block < test){
@@ -329,36 +421,61 @@ int true_friend_query(char * table1, char * table2, char * writeto, int total_me
         };   
 
       };
+      //printf("buffer_i: %d, first element in buffer: %d\n", buffer_i, buffer[0].UID1);
       num_block++;
 
     };
-
+	 int j1 = 0;
     int num_pages = S_filesize/block_size;
+    page = 0;
+   // printf("num pages: %d, page number: %d\n", num_pages, page);
     // for each page of S
-    for (int i = 0; i < num_pages; i++) {
-      Record * S_buffer = (Record * ) malloc(block_size);
-      if ((result = fread(S_buffer, sizeof(Record), block_elements, fp_S)) < 0){
-        printf("Read Error\n");
-      };
+    Record * S_buffer;
+    while (page < num_pages) {
+			Record * S_buffer = (Record * ) malloc(block_size);
+     		if ((result = fread(S_buffer, sizeof(Record), block_size/sizeof(Record), fp_S)) < 0){
+        			printf("Read Error\n");
+        	}
+      //printf("page number for S: %d\n", page);
       // for each tuple in S
-      for (int i = 0; i < block_elements; i++) {
+     // for (i3 = 0; i3 < block_elements; i3++) {
+     	   int s_i = 0;
+      	while (s_i < result) {
           // for each tuple in R
-          for (int j = 0; j < buffer_i; j++){
-          	    if (true_friend(&S_buffer[i], &buffer[j]))  {
-                  printf("True friends: %d %d", S_buffer[i].UID1, buffer[j].UID2);
+
+          for (j1 = 0; j1 < buffer_i; j1++){
+          	//printf("beginning of final loop\n");
+          	if (S_buffer[s_i].UID2 > buffer[buffer_i - 1].UID1) {
+						//printf("break in third loop: S: uid1: %d uid2: %d, R: uid1: %d, uid2: %d, last record in R: uid1: %d\n", S_buffer[s_i].UID1, S_buffer[s_i].UID2, buffer[j1].UID1, buffer[j1].UID2, buffer[buffer_i - 1].UID1);
+					break;              
+      			}
+          	    if (S_buffer[s_i].UID2 == buffer[j1].UID1 && S_buffer[s_i].UID1 == buffer[j1].UID2)  {
+                  //printf("True friends: %d %d\n", S_buffer[s_i].UID1, S_buffer[s_i].UID2);
                   // DO SELECT HERE
-                  fwrite(&S_buffer[i], sizeof(Record), 1, fp_write);
+                  fwrite(&S_buffer[s_i], sizeof(Record), 1, fp_write);
                   count++;
                   break;
+                 
               }
+              //printf("tuple in S: uid1: %d, uid2: %d   tuple in R: uid1: %d, uid2: %d\n", S_buffer[s_i].UID1, S_buffer[s_i].UID2, buffer[j1].UID1, buffer[j1].UID2);
+              //printf("index: %d, %d, buffer_i: %d", s_i, j1, buffer_i);
           }
+          	if (S_buffer[s_i].UID2 > buffer[buffer_i - 1].UID1) {
+						//printf("break in third loop: S: uid1: %d uid2: %d, R: uid1: %d, uid2: %d, last record in R: uid1: %d\n", S_buffer[s_i].UID1, S_buffer[s_i].UID2, buffer[j1].UID1, buffer[j1].UID2, buffer[buffer_i - 1].UID1);
+					break;              
+      			}
+          s_i++;
       }
-
+      if (S_buffer[s_i].UID2 > buffer[buffer_i].UID1) {
+				      break;
+      }
+      page++;
       free(S_buffer);
     }
-
+	 free(S_buffer);
     free(block_buffer);
     free(buffer);
+    rewind(fp_S);
     //free(writebuffer);
   }
   fclose(fp_write);
@@ -393,9 +510,9 @@ int main(int argc, char **argv) {
     }
 
     // to optimize: sort by uid1 in relation 1, then sort by uid2 in relation 2
-     //sort_file("table1.dat", "sortedbyuid1table1.dat", total_mem, block_size, 1);
-     //sort_file("table2.dat", "sortedbyuid2table2.dat", total_mem, block_size, 2);
+     sort_file("table1.dat", "sortedbyuid1table1.dat", total_mem, block_size, 1);
+     sort_file("table2.dat", "sortedbyuid2table2.dat", total_mem, block_size, 2);
 
-    //true_friend_query("sortedbyuid1table1.dat", "sortedbyuid2table2.dat", "result.dat", total_mem, block_size);
+    true_friend_query("sortedbyuid1table1.dat", "sortedbyuid2table2.dat", "result.dat", total_mem, block_size);
 	return 1;
 }
