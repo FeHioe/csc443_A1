@@ -437,7 +437,7 @@ int true_friend_query(char * table1, char * table2, char * writeto, int total_me
         			printf("Read Error\n");
         	}
 
-        while (S_buffer[0] < buffer[0] && S_buffer[result] < buffer[0]) {
+        while (S_buffer[0].UID2 < buffer[0].UID1 && S_buffer[result].UID2 < buffer[0].UID1) {
             if ((result = fread(S_buffer, sizeof(Record), block_size/sizeof(Record), fp_S)) < 0){
               printf("Read Error\n");
           }
