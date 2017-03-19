@@ -15,10 +15,25 @@ from (select uid2 as user from followers
 group by t.user
 order by indegree - outdegree DESC
 LIMIT 10);
+// Tried this query for 28 hours - coouldn't get it to complete
 
+// Alternative celebrities
+CREATE VIEW outdegree as SELECT uid1 as uid, count(uid2) as count FROM followers GROUP BY uid1;
+CREATE VIEW indegree as SELECT uid2 as uid, count(uid1) as count FROM followers GROUP BY uid2;
 
 Results of first query:
 Run Time: real 423.320 user 324.396000 sys 88.640000
 Count: Run Time: real 395.200 user 303.048000 sys 55.028000
 
 Results of second query:
+   5994113,564220
+   7496,344850
+   1349110,340491
+   1629776,170111
+   8121005,155933
+   2041453,152069
+   797152,118752
+   6623784,115819
+   645019,107639
+   3403,97931
+   Run Time: real 363.833 user 220.109375 sys 12.093750
