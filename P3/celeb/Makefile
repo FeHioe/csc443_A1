@@ -7,7 +7,7 @@ CFLAGS += -funroll-loops
 CFLAGS += -D_FILE_OFFSET_BITS=64
  
 # Source files
-MAIN_SRC=merge.h merge_external.c sort_file.c disk_sort.c celebrities.c
+MAIN_SRC=merge.h merge_external.c sort_file.c disk_sort.c celebrities.c celebrities.h
 
 # Binaries
 all: main_merge
@@ -20,4 +20,4 @@ clean:
 	rm disk_sort
 
 clean_dat:
-	rm output.dat
+	rm output.dat output1.dat outdegree.dat indegree.dat
