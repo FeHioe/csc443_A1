@@ -41,14 +41,17 @@ typedef struct merge_manager {
 	int current_heap_size;
 	int heap_capacity;  //corresponds to the total number of runs (input buffers)
 	char output_file_name [MAX_PATH_LENGTH]; //stores name of the file to which to write the final output
-	char input_prefix [MAX_PATH_LENGTH] ; //stores the prefix of a path to each run - to concatenate with run id and to read the file
+	char input_prefix [MAX_PATH_LENGTH]; //stores the prefix of a path to each run - to concatenate with run id and to read the file
+
+	int column;
+	int *file_capacity;	// How many elements in total for each file.
 }MergeManager;
 
 //1. main loop
-int merge_runs (MergeManager * manager, int total_mem, int block_size, int sublist_num, int id); 
+int merge_runs (MergeManager * manager, int sublist_num, int mem_size, int block_size, int column); 
 
 //2. creates and fills initial buffers, initializes heap taking 1 top element from each buffer 
-int init_merge (MergeManager * manager, int total_mem, int block_size, int sublist_num, int id); 
+int init_merge (MergeManager * manager, int sublist_num, int mem_size, int block_size, int column); 
 
 //3. flushes output buffer to disk when full
 int flush_output_buffer (MergeManager * manager); 
@@ -69,6 +72,6 @@ int refill_buffer (MergeManager * manager, int file_number);
 void clean_up (MergeManager * merger);
 
 //9. Application-specific comparison function
-int compare_heap_elements (HeapElement *a, HeapElement *b);
+int compare_heap_elements (HeapElement *a, HeapElement *b, int column);
 
 #endif

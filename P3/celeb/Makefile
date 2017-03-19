@@ -1,23 +1,27 @@
-CC = gcc
+C = gcc
 CFLAGS = -O3 -Wall 
 CFLAGS += -D_LARGEFILE_SOURCE
 CFLAGS += -fno-exceptions
 CFLAGS += -finline-functions
 CFLAGS += -funroll-loops
 CFLAGS += -D_FILE_OFFSET_BITS=64
+CFLAGS += -std=c99
  
 # Source files
-MAIN_SRC=merge.h merge_external.c sort_file.c disk_sort.c celebrities.c celebrities.h
+DISK_SORT_SRC=disk_sort.c
+SORTED_RUN_SRC=sort_file.c
+MERGE_EXTERNAL_SRC=merge_external.c
+CELEBRITIES_SRC = celebrities.c
 
 # Binaries
-all: main_merge
+all: celebrities
  
 #sequential writing in blocks
-main_merge: $(MAIN_SRC)
-	$(CC) $(CFLAGS) $^ -o $@ -lm
+celebrities: $(CELEBRITIES_SRC) $(DISK_SORT_SRC) $(SORTED_RUN_SRC) $(MERGE_EXTERNAL_SRC)
+	$(CC) $(CFLAGS) $^ -o $@
 
 clean:  
-	rm disk_sort
+	rm sublist*.dat output*.dat celebrities indegree.dat outdegree.dat
 
-clean_dat:
-	rm output.dat output1.dat outdegree.dat indegree.dat
+
+
