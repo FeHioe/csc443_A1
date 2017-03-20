@@ -4,20 +4,8 @@ SELECT t1.uid1, t1.uid2 FROM followers t1, followers t2 where t1.uid1 < t1.uid2 
 // true friend count
 SELECT count(t1.uid1) FROM followers t1, followers t2 where t1.uid1 < t1.uid2 and t1.uid1 = t2.uid2 and t2.uid1 = t1.uid2;
 
-// celebrities
-select user from (
-select t.user as user, 
-(select count(*) from followers where uid2 = t.user) as indegree,
-(select count(*) from followers where uid1 = t.user) as outdegree 
-from (select uid2 as user from followers
-        UNION
-	select uid1 as user from followers) t
-group by t.user
-order by indegree - outdegree DESC
-LIMIT 10);
-// Tried this query for 28 hours - coouldn't get it to complete
 
-// Alternative celebrities
+// celebrities
 CREATE VIEW outdegree as SELECT uid1 as uid, count(uid2) as count FROM followers GROUP BY uid1;
 CREATE VIEW indegree as SELECT uid2 as uid, count(uid1) as count FROM followers GROUP BY uid2;
 
@@ -26,6 +14,9 @@ SELECT indegree.uid, (indegree.count - outdegree.count) as diff
    WHERE indegree.uid = outdegree.uid 
    ORDER BY diff DESC
    LIMIT 10;
+
+
+
 
 
 Results of first query:
