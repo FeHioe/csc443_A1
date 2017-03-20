@@ -182,8 +182,8 @@ int true_friend_query(char * table1, char * table2, char * writeto, int total_me
   int R_filesize;
   int S_filesize;
   int result = 0;
-  int last_page = 0;
-  int page = 0;
+  //int last_page = 0;
+  //int page = 0;
   int first = 1;
   Record * S_buffer;
   // Record * writebuffer;
@@ -318,12 +318,12 @@ int true_friend_query(char * table1, char * table2, char * writeto, int total_me
         };   
 
       };
-      printf("buffer_i: %d, first element in buffer: %d\n", buffer_i, buffer[0].UID1);
+      //printf("buffer_i: %d, first element in buffer: %d\n", buffer_i, buffer[0].UID1);
       num_block++;
 
     };
 	 int j1 = 0;
-    int num_pages = S_filesize/block_size;
+    //int num_pages = S_filesize/block_size;
     page = 0;
    // printf("num pages: %d, page number: %d\n", num_pages, page);
     // for each page of S
