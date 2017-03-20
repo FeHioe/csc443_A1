@@ -44,3 +44,16 @@ Results of second query:
    645019,107639
    3403,97931
    Run Time: real 363.833 user 220.109375 sys 12.093750
+
+
+UID=5994113， indegree=564238, outdegree=291, diff=563947
+UID=7496， indegree=350712, outdegree=6032, diff=344680
+UID=1349110， indegree=341790, outdegree=1471, diff=340319
+UID=1629776， indegree=172153, outdegree=2119, diff=170034
+UID=8121005， indegree=155894, outdegree=34, diff=155860
+UID=2041453， indegree=152615, outdegree=620, diff=151995
+UID=797152， indegree=118766, outdegree=74, diff=118692
+UID=6623784， indegree=115946, outdegree=183, diff=115763
+UID=645019， indegree=107858, outdegree=274, diff=107584
+UID=3403， indegree=102822, outdegree=4943, diff=97879
+Total time:166
