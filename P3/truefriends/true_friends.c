@@ -324,7 +324,7 @@ int true_friend_query(char * table1, char * table2, char * writeto, int total_me
     };
 	 int j1 = 0;
     //int num_pages = S_filesize/block_size;
-    page = 0;
+    //page = 0;
    // printf("num pages: %d, page number: %d\n", num_pages, page);
     // for each page of S
     
@@ -346,7 +346,7 @@ int true_friend_query(char * table1, char * table2, char * writeto, int total_me
               printf("Read Error\n");
           }
         }
-     printf("result: %d, file position: %lu, filesize: %lu \n", result, ftell(fp_S), S_filesize);
+     //printf("result: %d, file position: %lu, filesize: %lu \n", result, ftell(fp_S), S_filesize);
       // for each tuple in S
      // for (i3 = 0; i3 < block_elements; i3++) {
      	   int s_i = 0;
