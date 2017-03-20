@@ -475,8 +475,8 @@ int main(int argc, char **argv){
 
 	JoinManager manager;
 	char *filename = argv[1];
-	int mem_size = atoi(argv[2]) * 1024*1024;
-    int block_size = atoi(argv[3]) * 1024*1024;
+	int mem_size = atoi(argv[2]);
+    int block_size = atoi(argv[3]);
 	
 	sort_file(filename, mem_size, block_size, 1);
 	sort_file(filename, mem_size, block_size, 2);

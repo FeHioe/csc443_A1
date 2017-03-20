@@ -22,23 +22,7 @@ int uid2ltuid1(Record * record) {
 int true_friend(Record * record, Record * record2) {
 	return ((record->UID1 == record2->UID2) && (record2->UID1 == record->UID2));
 }
-/*
-// function that filters records in the buffer according to the compar
-// function
-Record * filtertuples(Record * buffer, int total_records, int (*compar)(Record * )) {
-	Record * lt = (Record *) malloc(total_records*sizeof(Record));
-	int i;
-	int lti = 0;
-	for (i =0; i < total_records; i++){
-		if (compar(&buffer[i])) {
-			lt[lti] = buffer[i];
-			printf("added tuple: uid1: %d, uid2: %d\n", lt[lti].UID1, lt[lti].UID2);
-			lti++;
-		}
-	}
-	return lt;
-}
-*/
+
 int iterate(char * writeto, char *filename, int total_mem, int block_size, int (*compar)(Record * )) {
   
   FILE *fp_read;
@@ -181,94 +165,6 @@ int iterate(char * writeto, char *filename, int total_mem, int block_size, int (
   
 }
 
-
-/*
-int new_join(char * table1, char * table2, char * writeto, int total_mem, int block_size) {
-	
-	int count = 0;
-  FILE *fp_readtable1;
-  FILE *fp_readtable2;
-  FILE * fp_R;
-  FILE * fp_S;
-  FILE * fp_write;
-  int table1_filesize;
-  int table2_filesize;
-  int R_filesize;
-  int S_filesize;
-  int result;  
-  int last_page = 0;
-  int page = 0;
-  // Record * writebuffer;
-  
-  if (block_size > total_mem){
-   printf("Error: Block size must be smaller than total memory.\n");
-    exit(1);
-  };  
-  
-  if (!(fp_readtable1 = fopen(table1, "rb"))) {
-    printf("Error: could not open file for read.\n");
-    exit(1);
-  }
-  if (!(fp_readtable2 = fopen(table2, "rb"))) {
-    printf("Error: could not open file for read.\n");
-    exit(1);
-  }
-
-  if (!(fp_write = fopen(writeto, "wb"))){
-      printf("Error: could not open file for write.");
-      exit(1);
-    }
-  
-  // get file size
-  fseek(fp_readtable1, 0L, SEEK_END);
-  table1_filesize = ftell(fp_readtable1);
-  rewind(fp_readtable1);
-
-  fseek(fp_readtable2, 0L, SEEK_END);
-  table2_filesize = ftell(fp_readtable2);
-  rewind(fp_readtable2);
-
-
-  // Check if total memory is sufficient 
-  int total_block_num = total_mem/block_size; // M
-  
-  int blocks_per_table = ceil((float)total_block_num/2);
-
-  int table1chunks = ceil((float) table1_filesize/blocks_per_table);
-  int table2chunks = ceil((float) table2_filesize/blocks_per_table);
-  
-  int table1chunk_size = table1_filesize/table1chunks;
-  int table2chunk_size = table2_filesize/table2chunks;
-  
-    
-  while (t1_chunks_read < table1chunks) {
-			Record * table1buffer = (Record *)malloc(table1chunk_size/sizeof(Record));
-			
-			
-  			while (t2_chunks_read < table2chunks) {
-  			
-				  			
-  			}
-  }
-	
-  // divide table R into chunks of size M - 1
-  int c_r = ceil((float) R_filesize / (total_block_num - 1));
-  //printf("filesize: %d total_mem: %d k: %d\n", filesize, total_mem, c_r);
-
-  // Determine chunk size
-  int chunk_size = ceil((float) R_filesize / c_r);
- 
- //printf("chunk size: %d\n", chunk_size);
-  int i;
-
-
-
-
-
-
-
-}
-*/
 // Join: t1.uid1 = t2.uid2 and t2.uid1 = t1.uid2
 // filename represents R1
 // fileame2 represents R2
@@ -286,8 +182,8 @@ int true_friend_query(char * table1, char * table2, char * writeto, int total_me
   int R_filesize;
   int S_filesize;
   int result = 0;
-  int last_page = 0;
-  int page = 0;
+  //int last_page = 0;
+  //int page = 0;
   int first = 1;
   Record * S_buffer;
   // Record * writebuffer;
@@ -422,13 +318,13 @@ int true_friend_query(char * table1, char * table2, char * writeto, int total_me
         };   
 
       };
-      printf("buffer_i: %d, first element in buffer: %d\n", buffer_i, buffer[0].UID1);
+      //printf("buffer_i: %d, first element in buffer: %d\n", buffer_i, buffer[0].UID1);
       num_block++;
 
     };
 	 int j1 = 0;
-    int num_pages = S_filesize/block_size;
-    page = 0;
+    //int num_pages = S_filesize/block_size;
+    //page = 0;
    // printf("num pages: %d, page number: %d\n", num_pages, page);
     // for each page of S
     
@@ -450,7 +346,7 @@ int true_friend_query(char * table1, char * table2, char * writeto, int total_me
               printf("Read Error\n");
           }
         }
-     printf("result: %d, file position: %lu, filesize: %lu \n", result, ftell(fp_S), S_filesize);
+     //printf("result: %d, file position: %lu, filesize: %lu \n", result, ftell(fp_S), S_filesize);
       // for each tuple in S
      // for (i3 = 0; i3 < block_elements; i3++) {
      	   int s_i = 0;
