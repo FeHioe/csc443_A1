@@ -474,10 +474,9 @@ int main(int argc, char **argv){
     ftime(&t_begin);
 
 	JoinManager manager;
-	int MB = 1024*1024;
 	char *filename = argv[1];
-	int mem_size = atoi(argv[2]) * MB;
-    int block_size = atoi(argv[3]) * MB;
+	int mem_size = atoi(argv[2]) * 1024*1024;
+    int block_size = atoi(argv[3]) * 1024*1024;
 	
 	sort_file(filename, mem_size, block_size, 1);
 	sort_file(filename, mem_size, block_size, 2);
